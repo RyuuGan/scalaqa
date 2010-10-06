@@ -1,0 +1,12 @@
+target
+*.ipr
+*.iml
+*.iws
+*.log
+*.bak
+*~
+.DS_Store
+nohup.out
+*.db
+
+
