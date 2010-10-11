@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<deployments>
+  <deployment prefix="ru.circumflex.tutorials">
+    <Topic>
+      <name>General questions</name>
+      <sendTo>feedback@rfei.ru</sendTo>
+    </Topic>
+    <Topic>
+      <name>Custom question</name>
+      <sendTo>feedback@rfei.ru</sendTo>
+    </Topic>
+    <Topic>
+      <name>Выбор обучения</name>
+      <sendTo>feedback@rfei.ru</sendTo>
+    </Topic>
+    <Topic>
+      <name>Оплата обучения</name>
+      <sendTo>feedback@rfei.ru</sendTo>
+    </Topic>
+    <Topic>
+      <name>Работа партнеров РФЭИ</name>
+      <sendTo>feedback@rfei.ru</sendTo>
+    </Topic>
+    <Topic>
+      <name>Работа сотрудников РФЭИ</name>
+      <sendTo>feedback@rfei.ru</sendTo>
+    </Topic>
+    <Topic>
+      <name>Вопрос ректору, не попадающий в классификацию</name>
+      <sendTo>feedback@rfei.ru</sendTo>
+    </Topic>
+    <Topic>
+      <name>Предложение по улучшению работы РФЭИ</name>
+      <sendTo>feedback@rfei.ru</sendTo>
+    </Topic>
+    <Topic>
+      <name>Предложение по улучшению качества учебного курса</name>
+      <sendTo>feedback@rfei.ru</sendTo>
+    </Topic>
+    <Topic>
+      <name>Другое</name>
+      <sendTo>feedback@rfei.ru</sendTo>
+    </Topic>
+
+    <Administrator>
+      <username>sl</username>
+      <password>sl</password>
+    </Administrator>
+    <Administrator>
+      <username>inca</username>
+      <password>inca</password>
+    </Administrator>
+    <Administrator>
+      <username>ryu</username>
+      <password>ryu</password>
+    </Administrator>
+    
+    <Question>
+      <username>sl</username>
+      <body>How?</body>
+      <email>sl@whiteants.net</email>
+      <topic>
+        <Topic name="General questions"/>
+      </topic>
+    </Question>
+    <Question>
+      <username>inca</username>
+      <body>What?</body>
+      <email>inca@whiteants.net</email>
+      <topic>
+        <Topic name="Custom question"/>
+      </topic>
+    </Question>
+    <Question>
+      <username>ryu</username>
+      <body>Why?</body>
+      <email>ryu@whiteants.net</email>
+      <topic>
+        <Topic name="Выбор обучения"/>
+      </topic>
+      <answer>Because it is not bad</answer>
+    </Question>
+    <Question>
+      <username>ryu</username>
+      <body>What about?</body>
+      <email>ryu@whiteants.net</email>
+      <topic>
+        <Topic name="Custom question"/>
+      </topic>
+    </Question>
+
+    <Tag>
+      <name>выбор обучения</name>
+      <question>
+        <Question body="How?" />
+      </question>
+    </Tag>
+    <Tag>
+      <name>деньги</name>
+      <question>
+        <Question body="What about?" />
+      </question>
+    </Tag>
+    <Tag>
+      <name>диплом</name>
+      <question>
+        <Question body="What about?" />
+      </question>
+    </Tag>
+    <Tag>
+      <name>обучение</name>
+      <question>
+        <Question body="What about?" />
+      </question>
+    </Tag>
+    <Tag>
+      <name>поступление</name>
+      <question>
+        <Question body="What?" />
+      </question>
+    </Tag>
+
+  </deployment>
+</deployments>

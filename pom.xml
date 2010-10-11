@@ -14,6 +14,10 @@
     <port>8180</port>
     <cx.version>2.0</cx.version>
     <cx.router>ru.circumflex.tutorials.Main</cx.router>
+    <orm.connection.driver>org.postgresql.Driver</orm.connection.driver>
+    <orm.connection.url>jdbc:postgresql://localhost:5432/scalaqa</orm.connection.url>
+    <orm.connection.username>scalaqa</orm.connection.username>
+    <orm.connection.password>scalaqa</orm.connection.password>
   </properties>
 
   <dependencies>
@@ -29,6 +33,11 @@
     </dependency>
     <dependency>
       <groupId>ru.circumflex</groupId>
+      <artifactId>circumflex-orm</artifactId>
+      <version>${cx.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ru.circumflex</groupId>
       <artifactId>circumflex-ftl</artifactId>
       <version>${cx.version}</version>
     </dependency>
@@ -37,6 +46,11 @@
       <artifactId>servlet-api</artifactId>
       <version>2.5</version>
       <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>9.0-801.jdbc4</version>
     </dependency>
   </dependencies>
 
@@ -64,25 +78,6 @@
           <source>1.6</source>
           <target>1.6</target>
         </configuration>
-      </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>1.5</version>
-        <executions>
-          <execution>
-            <id>add-source</id>
-            <phase>generate-sources</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
-            <configuration>
-              <sources>
-                <source>src/main/scala</source>
-              </sources>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.mortbay.jetty</groupId>
@@ -119,6 +114,18 @@
             </goals>
           </execution>
         </executions>
+        <configuration>
+          <packages>
+            <param>ru.circumflex.tutorials</param>
+          </packages>
+        </configuration>
+        <dependencies>
+          <dependency>
+            <groupId>postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>9.0-801.jdbc4</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>

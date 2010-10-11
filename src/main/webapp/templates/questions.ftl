@@ -5,13 +5,13 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 </head>
 <body>
-  Tags: 
+  Questions
+  [#list questions as q]
+    <div id="question-${q.id}">
+      ${q.username}: &laquo;${q.body}&raquo;
+    </div>
+  [/#list]
+  Tags
   [#include "tags.ftl"]
-  Last answered questions:
-  <ul>
-    [#list laq as q]
-      <li><a href="${a_ref}${q.id}">${q.body}</a></li>
-    [/#list]
-  </ul>
 </body>
 </html>
