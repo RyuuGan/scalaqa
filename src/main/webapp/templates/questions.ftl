@@ -1,17 +1,20 @@
 [#ftl]
-<!doctype html>
-<html>
-<head>
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-</head>
-<body>
-  Questions
+[#include "/layout.ftl"/]
+[@layout]
+<h1>${message}</h1>
+<ul id="found-questions">
   [#list questions as q]
-    <div id="question-${q.id}">
-      ${q.username}: &laquo;${q.body}&raquo;
-    </div>
+    <li>
+      <a href="/questions/${q.id}" title="Question №${q.id}">${q.title}</a>
+      <footer class="question-info">
+        <span class="published">
+          at ${q.createdAt?string("yyyy-MM-dd")}
+        </span>
+        <span class="vcard author">
+          by ${q.username}
+        </span>
+      </footer>
+    </li>
   [/#list]
-  Tags
-  [#include "tags.ftl"]
-</body>
-</html>
+</ul>
+[/@layout]

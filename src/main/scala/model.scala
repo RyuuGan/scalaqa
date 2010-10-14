@@ -14,6 +14,7 @@ class Question extends Record[Long, Question]
   val id = "id".BIGINT.NOT_NULL.AUTO_INCREMENT
   val username = "username".TEXT.NOT_NULL
   val createdAt = "created_at".TIMESTAMP.NOT_NULL.DEFAULT("current_timestamp")
+  val title = "title".TEXT.NOT_NULL
   val body = "body".TEXT.NOT_NULL
   val email = "email".TEXT
   val answer = "answer".TEXT

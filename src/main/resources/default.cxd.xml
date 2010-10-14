@@ -58,6 +58,7 @@
     <Question>
       <username>sl</username>
       <body>How?</body>
+      <title>making superior things</title>
       <email>sl@whiteants.net</email>
       <topic>
         <Topic name="General questions"/>
@@ -66,6 +67,8 @@
     <Question>
       <username>inca</username>
       <body>What?</body>
+      <title>get excellent marks</title>
+      <answer>just study</answer>
       <email>inca@whiteants.net</email>
       <topic>
         <Topic name="Custom question"/>
@@ -74,6 +77,7 @@
     <Question>
       <username>ryu</username>
       <body>Why?</body>
+      <title>serious</title>
       <email>ryu@whiteants.net</email>
       <topic>
         <Topic name="Выбор обучения"/>
@@ -83,6 +87,7 @@
     <Question>
       <username>ryu</username>
       <body>What about?</body>
+      <title>new features</title>
       <email>ryu@whiteants.net</email>
       <topic>
         <Topic name="Custom question"/>
@@ -98,7 +103,7 @@
     <Tag>
       <name>деньги</name>
       <question>
-        <Question body="What about?" />
+        <Question body="What about?"/>
       </question>
     </Tag>
     <Tag>

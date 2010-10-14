@@ -22,7 +22,7 @@
   </category>
 
   <category name="ru.circumflex.web">
-    <priority value="debug"/>
+    <priority value="trace"/>
   </category>
 
   <category name="ru.circumflex.orm">
