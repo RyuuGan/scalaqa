@@ -2,7 +2,7 @@
 [#include "/layout.ftl"/]
 [@layout]
 <h1>Ask new question</h1>
-<form id="question_ask" name="question_ask"
+<form id="question_ask" name="question_ask" accept-charset="UTF-8"
       action="/ask" method="post">
   <fieldset>
     <dl>
@@ -14,9 +14,9 @@
       <dd><textarea id="body" name="body" cols="105" rows="10" name="body" wrap="virtual"></textarea></dd>
       <dt><label for="email">E-mail, if you want to see a notification after answering your question</label></dt>
       <dd><input type="text" id="email" name="email" size="64"/></dd>
-      <dt><label for="topic_id">Topic</label></dt>
+      <dt><label for="topic">Topic</label></dt>
       <dd>
-        <select id="topic_id" name="topic_id">
+        <select id="topic" name="topic">
           [#list topics as t]
             <option value="${t.id}" selected="true">${t.name}</option>
           [/#list]

@@ -2,7 +2,6 @@ package ru.circumflex.tutorials
 
 import ru.circumflex._, core._, web._, freemarker._, orm._
 
-import java.util.Date
 
 class AdminRouter extends RequestRouter("/admin") {
   val q = Question AS "q"
@@ -62,13 +61,24 @@ class AdminRouter extends RequestRouter("/admin") {
     ftl("edit_question.ftl")
   }
 
-  post("/edit/questions/:id") = Question.get(uri("id").toLong) match {
-    case Some(q) =>
-      q.title := param("title")
-      q.answer := param("answer")
-      q.UPDATE()
-      redirect("/admin")
-    case _ => sendError(404)
+  post("/edit/questions/:id") = {
+    Question.get(uri("id").toLong) match {
+      case Some(q:Question) =>
+        q.title := param("title")
+        if (param("answer").trim != "")
+          q.answer := param("answer")
+        q.topic.field := param("topic").toLong
+        q.UPDATE()
+        val tags = param("tags").split(',')
+        for (s <- tags) {
+          val t = new Tag()
+          t.name := s.trim
+          t.question.field := uri("id").toLong
+          t.INSERT()
+        }
+        redirect("/admin")
+      case _ => sendError(404)
+    }
   }
 
 }

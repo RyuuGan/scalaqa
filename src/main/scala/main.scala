@@ -77,13 +77,11 @@ class Main extends RequestRouter {
 
   get("/search/?") = {
     fetchTags
-
     if (param("q").length == 0) {
       redirect("/")
     }
-
     'message := "All questions for: " + param("q")
-    'questions := (SELECT(q.*) FROM(q) WHERE ((q.body ILIKE param("q")) OR (q.title ILIKE param ("q")))).list
+    'questions := (SELECT(q.*) FROM(q) WHERE ((q.body LIKE param("q")) OR (q.title LIKE param ("q")))).list
     ftl("questions.ftl")
   }
 
