@@ -81,7 +81,7 @@ class Main extends RequestRouter {
       redirect("/")
     }
     'message := "All questions for: " + param("q")
-    'questions := (SELECT(q.*) FROM(q) WHERE ((q.body LIKE param("q")) OR (q.title LIKE param ("q")))).list
+    'questions := (SELECT(q.*) FROM(q) WHERE ((q.body ILIKE ("%" + param("q") + "%")) OR (q.title ILIKE ("%" + param("q") + "%")))).list
     ftl("questions.ftl")
   }
 
