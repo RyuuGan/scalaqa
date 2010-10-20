@@ -4,17 +4,10 @@ import ru.circumflex._, core._, web._, freemarker._, orm._
 
 
 class AdminRouter extends RequestRouter("/admin") {
-  val q = Question AS "q"
-  val t = Tag AS "t"
-  get("/?") = {
-    fetchTags
-    if (session.get("admin").isEmpty)
-      redirect("/admin/login")
-    else{
-      session("questions") = (SELECT(q.*) FROM(q) WHERE (q.answer IS_NULL)).list
-      ftl("administrator.ftl")
-    }
-  }
+
+  get("/?") = if (session.get("admin").isEmpty)
+    redirect("/admin/login")
+  else redirect("/admin/index.html")
 
   get("/login/?") = {
     fetchTags
@@ -22,63 +15,60 @@ class AdminRouter extends RequestRouter("/admin") {
   }
 
   get("/logout/?") = {
-    session("admin") = null
-    session("questions") = null
+    session.remove("admin")
     redirect("/")
   }
 
-  post("/login/?") = (Administrator AS "adm").map { adm =>
-    SELECT(adm.*)
-        .FROM(adm)
-        .WHERE((adm.username EQ param("username")) AND (adm.password EQ param("password")))
-        .unique
-  } match {
+  post("/login/?") = Administrator.selectAdmin(param("username").trim, param("password").trim) match {
     case Some(a) =>
       session("admin") = a.username
-      session("questions") = (SELECT(q.*) FROM(q) WHERE (q.answer IS_NULL)).list
       redirect("/admin")
     case _ =>
       fetchTags
       'msg := new Msg("login.error")
-      session("admin") = null
+      session.remove("admin")
       ftl("/login.ftl")
   }
 
   if (session.get("admin").isEmpty)
     sendError(403)
 
-  get("/edit/questions/:id") = {
-    var id:Long = 0
-    try{
-      id = uri("id").toLong
-    } catch{
-      case e: java.lang.Exception => id = 0
-    }
+  get("/index.html") = {
     fetchTags
+    'questions := Question.findUnanswered
+    ftl("administrator.ftl")
+  }
+
+  get("/edit/questions/:id") = {
+    fetchTags
+    val id = uri("id").toLong
     'topics := Topic.all
-    'questionTags := (SELECT(t.*) FROM(t) WHERE(t.question.field EQ id)).list
-    'question := (SELECT(q.*) FROM(q) WHERE(q.id EQ id)).unique
+    'questionTags := Tag.tagsForQuestion(id)
+    'question := Question.get(id)
     ftl("edit_question.ftl")
   }
 
-  post("/edit/questions/:id") = {
-    Question.get(uri("id").toLong) match {
-      case Some(q:Question) =>
-        q.title := param("title")
-        if (param("answer").trim != "")
-          q.answer := param("answer")
-        q.topic.field := param("topic").toLong
-        q.UPDATE()
-        val tags = param("tags").split(',')
-        for (s <- tags) {
-          val t = new Tag()
-          t.name := s.trim
-          t.question.field := uri("id").toLong
+  post("/edit/questions/:id") = Question.get(uri("id").toLong) match {
+    case Some(q: Question) =>
+      q.title := param("title")
+      if (param("answer").trim != "")
+        q.answer := param("answer")
+      q.topic.field := param("topic").toLong
+      q.UPDATE()
+      // parse comma-separated tags and adding them to database
+      param("tags").split(',').map(_.trim).filter(_ != "").foreach { s =>
+        val t = new Tag()
+        t.name := s
+        t.question.field := uri("id").toLong
+        try {
           t.INSERT()
         }
-        redirect("/admin")
-      case _ => sendError(404)
-    }
+        catch {
+          case _ => 
+        }
+      }
+      redirect("/admin/index.html")
+    case _ => sendError(404)
   }
 
 }

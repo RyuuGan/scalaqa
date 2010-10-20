@@ -10,7 +10,7 @@ class Question extends Record[Long, Question]
     with IdentityGenerator[Long, Question] {
   def relation = Question
   def PRIMARY_KEY = id
-  
+
   val id = "id".BIGINT.NOT_NULL.AUTO_INCREMENT
   val username = "username".TEXT.NOT_NULL
   val createdAt = "created_at".TIMESTAMP.NOT_NULL.DEFAULT("current_timestamp")
@@ -22,7 +22,38 @@ class Question extends Record[Long, Question]
 }
 
 object Question extends Question with Table[Long, Question] {
-  
+  validation.notEmpty(_.title)
+      .notEmpty(_.username)
+      .notEmpty(_.body)
+      .notNull(_.topic)
+      .pattern(_.email, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$", "syntax")
+
+  def findUnanswered(): Seq[Question] =
+    (this AS "q").map(q => SELECT(q.*).FROM(q).WHERE(q.answer IS_NULL).list)
+
+  def findLastAnsweredQuestions(): Seq[Question] =
+    (this AS "q").map(q => SELECT(q.*).FROM(q).WHERE(q.answer IS_NOT_NULL).ORDER_BY(q.createdAt DESC).LIMIT(10).list)
+
+  def allAnsweredQuestions(): Seq[Question] =
+    (this AS "q").map(q => SELECT(q.*).FROM(q).WHERE(q.answer IS_NOT_NULL).list)
+
+  def taggedQuestions(tag:String): Seq[Question] = {
+    val q = this AS "q"
+    val t = Tag AS "t"
+    SELECT(q.*).DISTINCT.FROM(t.JOIN(q,LEFT)).WHERE(t.name EQ tag).list
+  }
+
+  def questionsForTopic(top:String):Seq[Question] = {
+    val t = Topic AS "t"
+    val q = this AS "q"
+    SELECT(q.*).FROM(q JOIN t).WHERE(t.name EQ top).list
+  }
+
+  def search(s: String):Seq[Question] =
+    (this AS "q").map(q => (SELECT(q.*).FROM(q)
+        .WHERE ((q.body ILIKE ("%" + s + "%"))
+        OR (q.title ILIKE ("%" + s + "%")))).list)
+
 }
 
 class Tag extends Record[Long, Tag]
@@ -34,11 +65,14 @@ class Tag extends Record[Long, Tag]
   val id = "id".BIGINT.NOT_NULL.AUTO_INCREMENT
   val name = "name".TEXT.NOT_NULL
   val question = "question_id".BIGINT.NOT_NULL.REFERENCES(Question).ON_DELETE(CASCADE)
-  
+
 }
 
 object Tag extends Tag with Table[Long, Tag]{
+  val tagKey = UNIQUE(name, question)
 
+  def tagsForQuestion(id: Long): Seq[Tag] =
+    (this AS "t").map(t => SELECT(t.*).DISTINCT.FROM(t).WHERE(t.question.field EQ id).list)
 }
 
 class Topic extends Record[Long, Topic]
@@ -52,7 +86,6 @@ class Topic extends Record[Long, Topic]
 }
 
 object Topic extends Topic with Table[Long, Topic]{
-  
 }
 
 class Administrator extends Record[Long, Administrator]
@@ -69,4 +102,10 @@ class Administrator extends Record[Long, Administrator]
 object Administrator extends Administrator
     with Table[Long, Administrator]{
 
+  def selectAdmin(username: String, password: String): Option[Administrator] =
+    (this AS "a").map(a => SELECT(a.*)
+        .FROM(a)
+        .WHERE((a.username EQ username) AND (a.password EQ password))
+        .unique)
+  
 }

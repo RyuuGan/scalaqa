@@ -1,6 +1,7 @@
 [#ftl]
 [#include "/layout.ftl"/]
 [@layout]
+<h2><a href="/ask">Ask question</a></h2>
 <h1>Recently asked questions</h1>
 <ul id="recent-questions">
   [#list questions as q]
@@ -8,7 +9,7 @@
       <a href="/questions/${q.id}" title="Question №${q.id}">${q.title}</a>
       <footer class="question-info">
         <span class="published">
-          at ${q.createdAt?string("yyyy-MM-dd")}
+          asked at ${q.createdAt?string("yyyy-MM-dd")}
         </span>
         <span class="vcard author">
           by ${q.username}
@@ -17,5 +18,4 @@
     </li>
   [/#list]
 </ul>
-<h2><a href="/ask">Ask question</a></h2>
 [/@layout]

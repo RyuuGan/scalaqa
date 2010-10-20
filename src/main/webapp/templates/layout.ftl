@@ -13,7 +13,7 @@
 <body>
   <header id="header">
     <h1>
-      <a href="/">ScalaQA: Circumflex tutorials</a>
+      <a href="/" title="Home">ScalaQA: Circumflex tutorials</a>
     </h1>
     <nav>
       <ul>

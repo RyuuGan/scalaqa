@@ -8,7 +8,7 @@
       <a href="/questions/${q.id}" title="Question №${q.id}">${q.title}</a>
       <footer class="question-info">
         <span class="published">
-          at ${q.createdAt?string("yyyy-MM-dd")}
+          asked at ${q.createdAt?string("yyyy-MM-dd")}
         </span>
         <span class="vcard author">
           by ${q.username}
