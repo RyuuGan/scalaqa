@@ -1,0 +1,1 @@
+This project is made for circumflex tutorials (tutorials.circumflex.ru)
