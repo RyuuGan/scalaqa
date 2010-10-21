@@ -7,8 +7,6 @@ import java.util.Date
 class Main extends RequestRouter {
 
   'currentDate := new Date
-  val t = Tag AS "t"
-  val q = Question AS "q"
 
   get("/") = forward("/index.html")
 
@@ -51,24 +49,24 @@ class Main extends RequestRouter {
 
   get("/questions/?") = {
     fetchTags
-    'message := "All questions"
+    'message := new Msg("message.allQuestions")
     'questions := Question.allAnsweredQuestions
     ftl("questions.ftl")
   }
 
   get("/questions/tagged/:id") = {
     fetchTags
-    'message := "Questions for tag: " + uri("id").trim
+    'message := new Msg("message.tag") + uri("id").trim
     'questions := Question.taggedQuestions(uri("id").trim)
     ftl("questions.ftl") //tagged_questions
   }
 
   get("/questions/:id") = {
     var id:Long = 0
-    try{
+    try {
       id = uri("id").toLong
     } catch{
-      case e: java.lang.Exception => id = 0
+      case _ => sendError(404)
     }
     fetchTags
     'questionTags := Tag.tagsForQuestion(id)
@@ -77,24 +75,23 @@ class Main extends RequestRouter {
   }
 
   get("/topics/?") = {
-    val top = Topic AS "top"
     fetchTags
     'topics := Topic.all
     ftl("topics.ftl")
   }
   get("/topics/:id") = {
     fetchTags
-    'message := "All questions for topic: " + uri("id").trim
+    'message := new Msg("message.topic") + uri("id").trim
     'questions := Question.questionsForTopic(uri("id").trim)
     ftl("questions.ftl")
   }
 
   get("/search/?") = {
-    fetchTags
-    if (param("q").length == 0) {
+    if (param("q").trim.isEmpty) {
       redirect("/")
     }
-    'message := "All questions for: " + param("q").trim
+    fetchTags
+    'message := new Msg("message.search") + param("q").trim
     'questions := Question.search(param("q").trim)
     ftl("questions.ftl")
   }
