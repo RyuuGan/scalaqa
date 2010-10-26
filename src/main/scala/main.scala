@@ -12,7 +12,7 @@ class Main extends RequestRouter {
 
   get("/index.html") = {
     fetchTags
-    'questions := Question.findLastAnsweredQuestions
+    'questions := Question.findLastAnswered
     ftl("index.ftl")
   }
 
@@ -50,14 +50,14 @@ class Main extends RequestRouter {
   get("/questions/?") = {
     fetchTags
     'message := new Msg("message.allQuestions")
-    'questions := Question.allAnsweredQuestions
+    'questions := Question.findAnswered
     ftl("questions.ftl")
   }
 
   get("/questions/tagged/:id") = {
     fetchTags
     'message := new Msg("message.tag") + uri("id").trim
-    'questions := Question.taggedQuestions(uri("id").trim)
+    'questions := Question.findTagged(uri("id").trim)
     ftl("questions.ftl") //tagged_questions
   }
 
@@ -69,7 +69,14 @@ class Main extends RequestRouter {
       case _ => sendError(404)
     }
     fetchTags
-    'questionTags := Tag.tagsForQuestion(id)
+    val q: Question = Question.get(id) match {
+      case Some(q) => q
+      case _ => null
+    }
+    if (q == null) {
+      sendError(404)
+    }
+    'questionTags := Tag.findByQuestion(q)
     'question := Question.get(id)
     ftl("question_id.ftl")
   }
@@ -82,7 +89,7 @@ class Main extends RequestRouter {
   get("/topics/:id") = {
     fetchTags
     'message := new Msg("message.topic") + uri("id").trim
-    'questions := Question.questionsForTopic(uri("id").trim)
+    'questions := Question.findByTopic(uri("id").trim)
     ftl("questions.ftl")
   }
 

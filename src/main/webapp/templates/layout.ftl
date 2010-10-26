@@ -9,6 +9,12 @@
         href="/public/css/main.css"
         type="text/css"
         media="screen, projection"/>
+  <script type="text/javascript"
+          src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.3/jquery.min.js">
+  </script>
+  <script type="text/javascript"
+          src="/public/js/tags.js">
+  </script>
 </head>
 <body>
   <header id="header">

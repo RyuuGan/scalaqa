@@ -170,3 +170,35 @@ body {
 #footer #search {
   float:right;
 }
+
+#showedTags {
+  border:1px solid #ccc;
+  background:#fffff0;
+  overflow:hidden;
+  width:300px;
+  min-height:100px;
+  list-style: none;
+  padding:0;
+  font-size:0.75em;
+}
+
+#showedTags li {
+  float:left;
+  margin:4px;
+  background-color: #c7da76;
+  padding:4px;
+  overflow:hidden;
+  -webkit-box-shadow:1px 1px 1px #aaa;
+  border-radius:16px;
+}
+
+#showedTags li a {
+  color:#aaa;
+  background:#fff;
+  -webkit-box-shadow:1px 1px 1px #aaa;
+  border-radius:16px;
+  padding:0 4px;
+  font-size:12px;
+  line-height:12px;
+  text-decoration:none;
+}

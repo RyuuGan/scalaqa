@@ -31,25 +31,25 @@ object Question extends Question with Table[Long, Question] {
   def findUnanswered(): Seq[Question] =
     (this AS "q").map(q => SELECT(q.*).FROM(q).WHERE(q.answer IS_NULL).list)
 
-  def findLastAnsweredQuestions(): Seq[Question] =
+  def findLastAnswered(): Seq[Question] =
     (this AS "q").map(q => SELECT(q.*).FROM(q).WHERE(q.answer IS_NOT_NULL).ORDER_BY(q.createdAt DESC).LIMIT(10).list)
 
-  def allAnsweredQuestions(): Seq[Question] =
+  def findAnswered(): Seq[Question] =
     (this AS "q").map(q => SELECT(q.*).FROM(q).WHERE(q.answer IS_NOT_NULL).list)
 
-  def taggedQuestions(tag:String): Seq[Question] = {
+  def findTagged(tag: String): Seq[Question] = {
     val q = this AS "q"
     val t = Tag AS "t"
     SELECT(q.*).DISTINCT.FROM(t.JOIN(q,LEFT)).WHERE(t.name EQ tag).list
   }
 
-  def questionsForTopic(top:String):Seq[Question] = {
+  def findByTopic(top: String): Seq[Question] = {
     val t = Topic AS "t"
     val q = this AS "q"
     SELECT(q.*).FROM(q JOIN t).WHERE(t.name EQ top).list
   }
 
-  def search(s: String):Seq[Question] =
+  def search(s: String): Seq[Question] =
     (this AS "q").map(q => (SELECT(q.*).FROM(q)
         .WHERE ((q.body ILIKE ("%" + s + "%"))
         OR (q.title ILIKE ("%" + s + "%")))).list)
@@ -71,8 +71,11 @@ class Tag extends Record[Long, Tag]
 object Tag extends Tag with Table[Long, Tag]{
   val tagKey = UNIQUE(name, question)
 
-  def tagsForQuestion(id: Long): Seq[Tag] =
-    (this AS "t").map(t => SELECT(t.*).DISTINCT.FROM(t).WHERE(t.question.field EQ id).list)
+  def findByQuestion(q: Question): Seq[Tag] =
+    (this AS "t").map(t => SELECT(t.*).DISTINCT.FROM(t).WHERE(t.question.field EQ q.id.value).list)
+
+  def deleteByQuestion(q: Question) =
+    (this AS "t").map(t => DELETE(t).WHERE(t.question.field EQ q.id.value).execute)
 }
 
 class Topic extends Record[Long, Topic]
@@ -102,7 +105,7 @@ class Administrator extends Record[Long, Administrator]
 object Administrator extends Administrator
     with Table[Long, Administrator]{
 
-  def selectAdmin(username: String, password: String): Option[Administrator] =
+  def findByIdentity(username: String, password: String): Option[Administrator] =
     (this AS "a").map(a => SELECT(a.*)
         .FROM(a)
         .WHERE((a.username EQ username) AND (a.password EQ password))

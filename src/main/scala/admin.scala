@@ -1,7 +1,8 @@
 package ru.circumflex.tutorials
 
 import ru.circumflex._, core._, web._, freemarker._, orm._
-
+import org.apache.commons.io.IOUtils
+import xml._
 
 class AdminRouter extends RequestRouter("/admin") {
 
@@ -19,7 +20,7 @@ class AdminRouter extends RequestRouter("/admin") {
     redirect("/")
   }
 
-  post("/login/?") = Administrator.selectAdmin(param("username").trim, param("password").trim) match {
+  post("/login/?") = Administrator.findByIdentity(param("username").trim, param("password").trim) match {
     case Some(a) =>
       session("admin") = a.username
       redirect("/admin")
@@ -43,32 +44,36 @@ class AdminRouter extends RequestRouter("/admin") {
     fetchTags
     val id = uri("id").toLong
     'topics := Topic.all
-    'questionTags := Tag.tagsForQuestion(id)
+    'questionTags := Tag.findByQuestion(Question.get(id) match {
+      case Some(q) => q
+      case _ => sendError(404)
+    })/*.map(t => t.name.value match {
+      case Some(n) => n
+    }).mkString(", ")                                     */
     'question := Question.get(id)
     ftl("edit_question.ftl")
   }
 
   post("/edit/questions/:id") = Question.get(uri("id").toLong) match {
     case Some(q: Question) =>
-      q.title := param("title")
-      if (param("answer").trim != "")
-        q.answer := param("answer")
-      q.topic.field := param("topic").toLong
-      q.UPDATE()
-      // parse comma-separated tags and adding them to database
-      param("tags").split(',').map(_.trim).filter(_ != "").foreach { s =>
-        val t = new Tag()
-        t.name := s
-        t.question.field := uri("id").toLong
-        try {
-          t.INSERT()
+        val r = request.body.asXml
+        q.answer := (r \ "answer").text.trim
+        q.title := (r \ "title").text.trim
+        q.topic.field := (r \ "topic").text.toLong
+        Tag.deleteByQuestion(q)
+        val tags = (r \\ "tag")
+        for (tag <- tags) {
+          val t = new Tag()
+          t.name := tag.child.text.trim
+          t.question.field := uri("id").toLong
+          try {
+            t.INSERT()
+          }
+          catch {
+            case e: java.lang.Exception =>  
+          }
         }
-        catch {
-          case _ => 
-        }
-      }
-      redirect("/admin/index.html")
-    case _ => sendError(404)
+        redirect("/admin/index.html")
+    case _ =>sendError(404)
   }
-
 }
