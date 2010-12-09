@@ -47,9 +47,7 @@ class AdminRouter extends RequestRouter("/admin") {
     'questionTags := Tag.findByQuestion(Question.get(id) match {
       case Some(q) => q
       case _ => sendError(404)
-    })/*.map(t => t.name.value match {
-      case Some(n) => n
-    }).mkString(", ")                                     */
+    })
     'question := Question.get(id)
     ftl("edit_question.ftl")
   }
@@ -64,7 +62,7 @@ class AdminRouter extends RequestRouter("/admin") {
         val tags = (r \\ "tag")
         for (tag <- tags) {
           val t = new Tag()
-          t.name := tag.child.text.trim
+          t.name := tag.text.trim
           t.question.field := uri("id").toLong
           try {
             t.INSERT()

@@ -1,10 +1,6 @@
 package ru.circumflex.tutorials
 
-import java.util.Date
 import ru.circumflex.orm._
-
-// if you write "new Question()" that means that you'll create an instance of the class
-// but if you write "Question" that means that you will access to Table with the name "Question"
 
 class Question extends Record[Long, Question]
     with IdentityGenerator[Long, Question] {
