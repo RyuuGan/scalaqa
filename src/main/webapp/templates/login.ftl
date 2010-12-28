@@ -3,7 +3,7 @@
 [@layout]
 <h1>Administrators</h1>
 <ul id="administrators">
-  <h2>[#if msg??]<div class="msg error">${msg}</div>[/#if] </h2>
+  <h2>[#if msg_login??]<div class="msg error">${msg_login}</div>[/#if] </h2>
   <form name="login" action="" method="POST">
     <fieldset>
       <label for="username">Username:</label>

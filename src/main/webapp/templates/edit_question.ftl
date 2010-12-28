@@ -45,6 +45,9 @@
     <input id="submitButton" type="button" value="submit"/>
   </fieldset>
 </form>
+[#if question.attachment??]
+<p>There is an <a href="getAttachment?attachment=${question.attachment}">attachment</a> to this question</p>
+[/#if]
 <form id="admins_form" action="/admin" method="GET">
   <input type="submit" value="go to admins page">
 </form>

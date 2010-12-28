@@ -2,8 +2,12 @@
 [#include "/layout.ftl"/]
 [@layout]
 <h1>Ask new question</h1>
-<form id="question_ask" name="question_ask" accept-charset="UTF-8"
-      action="/ask" method="post">
+<form id="question_ask"
+      enctype="multipart/form-data"
+      accept-charset="UTF-8"
+      accept-"
+      action="/ask"
+      method="post">
   [#assign errors = flash.errors!/]
   <fieldset>
     <dl>
@@ -36,10 +40,15 @@
         </select>
       [@fieldErrors name="topic"/]
       </dd>
+      <dt><label for="attachment">Attachment</label> </dt>
+      <dd>
+        <input type="file" id="attachment" name="attachment"/>
+      </dd>
     </dl>
     <input type="submit" value="submit"/>
   </fieldset>
 </form>
+
 [/@layout]
 
 [#macro fieldErrors name]

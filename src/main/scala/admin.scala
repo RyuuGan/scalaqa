@@ -26,7 +26,7 @@ class AdminRouter extends RequestRouter("/admin") {
       redirect("/admin")
     case _ =>
       fetchTags
-      'msg := new Msg("login.error")
+      'msg_login := new Msg("login.error")
       session.remove("admin")
       ftl("/login.ftl")
   }
@@ -58,11 +58,12 @@ class AdminRouter extends RequestRouter("/admin") {
         q.answer := (r \ "answer").text.trim
         q.title := (r \ "title").text.trim
         q.topic.field := (r \ "topic").text.toLong
+        q.save
         Tag.deleteByQuestion(q)
         val tags = (r \\ "tag")
         for (tag <- tags) {
           val t = new Tag()
-          t.name := tag.text.trim
+          t.name := tag.text.trim.toLowerCase
           t.question.field := uri("id").toLong
           try {
             t.INSERT()

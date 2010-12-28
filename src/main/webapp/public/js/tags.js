@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-  $('#tagsInput').keyup(function(event) {
+  $('#tagsInput').keypress(function(event) {
     if (event.keyCode == 13) {
       event.preventDefault();
       var string = $('#tagsInput').val();
@@ -16,16 +16,19 @@ $(document).ready(function(){
       }
       return false;
     }
+    if (event.keyCode == 63) {
+      event.preventDefault();
+    }
   });
 
   $("#submitButton").click(function() {
     var xmlString = '<?xml version=\"1.0\" encoding=\"UTF-8\"?> \
         <question> \
-          <title>' + $('#title').val() + '</title>\
-          <answer>' + $('#answer').text() + '</answer> \
-          <topic>' + $('#topic').val() + '</topic> \
+          <title>' + jQuery('#title').val() + '</title>\
+          <answer>' + jQuery('#answer').val() + '</answer> \
+          <topic>' + jQuery('#topic').val() + '</topic> \
           <tags>';
-    var li = $("#showedTags").find('li');
+    var li = jQuery("#showedTags").find('li');
     for (var i = 0; i < li.length; i++) {
       var liElem = li[i];
       var tag = liElem.textContent;

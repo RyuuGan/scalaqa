@@ -15,6 +15,7 @@ class Question extends Record[Long, Question]
   val email = "email".TEXT
   val answer = "answer".TEXT
   val topic = "topic_id".BIGINT.NOT_NULL.REFERENCES(Topic).ON_DELETE(CASCADE)
+  val attachment = "attachment".TEXT
 }
 
 object Question extends Question with Table[Long, Question] {

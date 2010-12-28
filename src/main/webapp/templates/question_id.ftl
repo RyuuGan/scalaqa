@@ -10,7 +10,6 @@
         ${question.body}
         </span>
       <footer class="tags">
-
         <ul>
           <li class="tag">Tags: </li>
           [#list questionTags as qt]
@@ -22,6 +21,10 @@
           [/#if]
         </ul>
       </footer>
+      [#if question.attachment??]
+        <p>There is an <a href="/download?attachment=${question.attachment}">attachment</a>
+          for this question</p>
+      [/#if]
     </header>
     <article>
       <footer class="question-info">
