@@ -42,7 +42,6 @@ class Main extends RequestRouter {
         m += (name -> Streams.asString(stream,"UTF-8").trim)
       else {
         val un = m.getOrElse("username","").toLowerCase.trim
-        val size = itemStream.asInstanceOf[FileItem].getSize
         if (un != "") {
           m += ("file_name" -> (un + "/" + itemStream.getName))
           val dir = Directory(servletContext.getRealPath("/public/uploads/" + un + "/"))
