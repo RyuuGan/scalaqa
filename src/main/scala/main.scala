@@ -1,6 +1,6 @@
 package ru.circumflex.tutorials
 
-import ru.circumflex._, core._, web._, freemarker._, orm._
+import ru.circumflex._, core._, web._, orm._
 import java.util.Date
 import org.apache.commons.io.FileUtils
 import org.apache.commons.fileupload.FileItem
@@ -12,21 +12,18 @@ class Main extends RequestRouter {
 
   any("/admin/?*") = new AdminRouter
 
-  get("/") = {
-    'questions := Question.findLastAnswered
-    ftl("index.ftl")
-  }
+  get("/") = forward("/questions/")
   get("/tags") = {
     'tags := Tag.findWeights
-    ftl("/snippets/tags.ftl")
+    partialFtl("/snippets/tags.ftl")
   }
   get("/topics/?") = {
     'topics := Topic.all
-    ftl("/questions/topics.ftl")
+    partialFtl("/questions/topics.ftl")
   }
   get("/topics/:id") = {
     'questions := Question.findByTopic(uri("id").trim)
-    ftl("/questions/list.ftl")
+    partialFtl("/questions/list.ftl")
   }
 
   get("/download/*") = {
@@ -35,7 +32,7 @@ class Main extends RequestRouter {
     else redirect("/")
   }
 
-  get("/login") = ftl("/admin/login.ftl")
+  get("/login") = partialFtl("/admin/login.ftl")
   post("/login/?") = Administrator.findByIdentity(param("username").trim, param("password")) match {
     case Some(a) =>
       session("principal") = a.username
@@ -44,6 +41,10 @@ class Main extends RequestRouter {
       'errors := List(new Msg("login.error"))
       session.remove("principal")
       json("/response.json.ftl")
+  }
+  get("/logout") = {
+    session.remove("principal")
+    redirect("/")
   }
 
   any("/questions") = forward(uri(0) + "/")
@@ -57,17 +58,17 @@ class QuestionsRouter extends RequestRouter("/questions") {
     if (q == "")
       'questions := Question.findAnswered
     else 'questions := Question.search(q)
-    ftl("/questions/list.ftl")
+    partialFtl("/questions/list.ftl")
   }
   get("/tagged/:id") = {
     'questions := Question.findTagged(uri("id").trim)
-    ftl("/questions/list.ftl")
+    partialFtl("/questions/list.ftl")
   }
   get("/:id") = try {
     Question.get(param("id").toLong) match {
       case Some(q) =>
         'question := q
-        ftl("/questions/view.ftl")
+        partialFtl("/questions/view.ftl")
       case _ => sendError(404)
     }
   } catch {
@@ -75,7 +76,7 @@ class QuestionsRouter extends RequestRouter("/questions") {
   }
   get("/ask") = {
     'topics := Topic.all
-    ftl("ask.ftl")
+    partialFtl("ask.ftl")
   }
   post("/ask") = {
     request.body.parseFileItems(ff) foreach { fi =>

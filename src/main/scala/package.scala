@@ -23,6 +23,11 @@ package object tutorials {
     }
   }
 
+  def partialFtl(template: String): Nothing = if (request.body.xhr_?) ftl(template) else {
+    'content := ftl2string(template)
+    ftl("/layout.ftl")
+  }
+
   def principal: Option[Administrator] = session.getAs[Administrator]("principal")
 
   def auth(block: Administrator => Unit) = principal match {

@@ -12,7 +12,16 @@
           src="/public/js/jquery-1.4.3.min.js">
   </script>
   <script type="text/javascript"
+          src="/public/js/jquery.history.js">
+  </script>
+  <script type="text/javascript"
+          src="/public/js/jquery.form.js">
+  </script>
+  <script type="text/javascript"
           src="/public/js/less.js">
+  </script>
+  <script type="text/javascript"
+          src="/public/js/application.js">
   </script>
   ${scripts!}
 </head>
