@@ -22,7 +22,6 @@ object Question extends Question with Table[Long, Question] {
   validation.notEmpty(_.title)
       .notEmpty(_.username)
       .notEmpty(_.body)
-      .notNull(_.topic)
       .pattern(_.email, "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$", "syntax")
 
   def findUnanswered(): Seq[Question] =
@@ -69,10 +68,10 @@ object Tag extends Tag with Table[Long, Tag]{
   val tagKey = UNIQUE(name, question)
 
   def findByQuestion(q: Question): Seq[Tag] =
-    (this AS "t").map(t => SELECT(t.*).DISTINCT.FROM(t).WHERE(t.question.field EQ q.id.value).list)
+    (this AS "t").map(t => SELECT(t.*).DISTINCT.FROM(t).WHERE(t.question IS q).list)
 
   def deleteByQuestion(q: Question) =
-    (this AS "t").map(t => DELETE(t).WHERE(t.question.field EQ q.id.value).execute)
+    (this AS "t").map(t => DELETE(t).WHERE(t.question IS q).execute)
 }
 
 class Topic extends Record[Long, Topic]

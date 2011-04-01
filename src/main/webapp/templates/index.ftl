@@ -1,5 +1,6 @@
 [#ftl]
 [#include "/layout.ftl"/]
+
 [@layout]
 <h2><a href="/ask">Ask question</a></h2>
 <h1>Recently asked questions</h1>

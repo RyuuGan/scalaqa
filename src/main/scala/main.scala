@@ -66,7 +66,7 @@ class Main extends RequestRouter {
       case "" => q.email.setNull
       case v => q.email := v
     }
-    q.topic := m("topic").toString.toLong
+    q.topic.field := m("topic").toString.toLong
     m("file_name") match {
       case "" => q.attachment.setNull
       case v => q.attachment := v
