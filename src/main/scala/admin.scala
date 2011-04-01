@@ -1,8 +1,6 @@
 package ru.circumflex.tutorials
 
 import ru.circumflex._, core._, web._, freemarker._, orm._
-import org.apache.commons.io.IOUtils
-import xml._
 
 class AdminRouter extends RequestRouter("/admin") {
 
@@ -11,7 +9,6 @@ class AdminRouter extends RequestRouter("/admin") {
   else redirect("/admin/index.html")
 
   get("/login/?") = {
-    fetchTags
     ftl("login.ftl")
   }
 
@@ -25,7 +22,6 @@ class AdminRouter extends RequestRouter("/admin") {
       session("admin") = a.username
       redirect("/admin")
     case _ =>
-      fetchTags
       'msg_login := new Msg("login.error")
       session.remove("admin")
       ftl("/login.ftl")
@@ -35,21 +31,20 @@ class AdminRouter extends RequestRouter("/admin") {
     sendError(403)
 
   get("/index.html") = {
-    fetchTags
     'questions := Question.findUnanswered
     ftl("administrator.ftl")
   }
 
-  get("/edit/questions/:id") = {
-    fetchTags
-    val id = uri("id").toLong
-    'topics := Topic.all
-    'questionTags := Tag.findByQuestion(Question.get(id) match {
-      case Some(q) => q
+  get("/edit/:id") = try {
+    Question.get(param("id").toLong) match {
+      case Some(q) =>
+        'question := q
+        'topics := Topic.all
+        ftl("/questions/view.ftl")
       case _ => sendError(404)
-    })
-    'question := Question.get(id)
-    ftl("edit_question.ftl")
+    }
+  } catch {
+    case e: Exception => sendError(404)
   }
 
   post("/edit/questions/:id") = Question.get(uri("id").toLong) match {

@@ -3,7 +3,7 @@ package ru.circumflex.tutorials
 import ru.circumflex.orm._
 
 class Question extends Record[Long, Question]
-    with IdentityGenerator[Long, Question] {
+with IdentityGenerator[Long, Question] {
   def relation = Question
   def PRIMARY_KEY = id
 
@@ -16,6 +16,8 @@ class Question extends Record[Long, Question]
   val answer = "answer".TEXT
   val topic = "topic_id".BIGINT.NOT_NULL.REFERENCES(Topic).ON_DELETE(CASCADE)
   val attachment = "attachment".TEXT
+
+  def tags = inverseMany(Tag.question)
 }
 
 object Question extends Question with Table[Long, Question] {
@@ -52,8 +54,7 @@ object Question extends Question with Table[Long, Question] {
 
 }
 
-class Tag extends Record[Long, Tag]
-    with IdentityGenerator[Long, Tag]{
+class Tag extends Record[Long, Tag] with IdentityGenerator[Long, Tag]{
 
   def relation = Tag
   def PRIMARY_KEY = id
@@ -67,15 +68,28 @@ class Tag extends Record[Long, Tag]
 object Tag extends Tag with Table[Long, Tag]{
   val tagKey = UNIQUE(name, question)
 
-  def findByQuestion(q: Question): Seq[Tag] =
-    (this AS "t").map(t => SELECT(t.*).DISTINCT.FROM(t).WHERE(t.question IS q).list)
+  def findWeights: Seq[TagWeight] = {
+    val counts = (Tag AS "t").map(t =>
+      SELECT(COUNT(t.id).AS("count") -> t.name.AS("name"))
+          .FROM(t)
+          .ORDER_BY(t.name)
+          .GROUP_BY(t.name)
+          .list)
+        .flatMap {
+      case (Some(count), Some(name)) => Some(new TagWeight(name, count))
+      case _ => None
+    }
+    val min = counts.foldLeft(Double.MaxValue)((w, t) => if (t.weight < w) t.weight else w)
+    val max = counts.foldLeft(0d)((w, t) => if (t.weight > w) t.weight else w)
+    return counts.map(w => new TagWeight(w.name, (w.weight - min) / (max - min)))
+  }
 
-  def deleteByQuestion(q: Question) =
-    (this AS "t").map(t => DELETE(t).WHERE(t.question IS q).execute)
+  def deleteByQuestion(q: Question) = (this AS "t").map(t => DELETE(t).WHERE(t.question IS q).execute)
 }
 
-class Topic extends Record[Long, Topic]
-    with IdentityGenerator[Long, Topic]{
+case class TagWeight(name: String, weight: Double)
+
+class Topic extends Record[Long, Topic] with IdentityGenerator[Long, Topic]{
   def relation = Topic
   def PRIMARY_KEY = id
 
@@ -84,11 +98,9 @@ class Topic extends Record[Long, Topic]
   val sendTo = "send_to".TEXT
 }
 
-object Topic extends Topic with Table[Long, Topic]{
-}
+object Topic extends Topic with Table[Long, Topic]
 
-class Administrator extends Record[Long, Administrator]
-    with IdentityGenerator[Long, Administrator]{
+class Administrator extends Record[Long, Administrator] with IdentityGenerator[Long, Administrator]{
 
   def relation = Administrator
   def PRIMARY_KEY = id
@@ -98,13 +110,12 @@ class Administrator extends Record[Long, Administrator]
   val password = "password".TEXT.NOT_NULL
 }
 
-object Administrator extends Administrator
-    with Table[Long, Administrator]{
+object Administrator extends Administrator with Table[Long, Administrator]{
 
   def findByIdentity(username: String, password: String): Option[Administrator] =
     (this AS "a").map(a => SELECT(a.*)
         .FROM(a)
         .WHERE((a.username EQ username) AND (a.password EQ password))
         .unique)
-  
+
 }

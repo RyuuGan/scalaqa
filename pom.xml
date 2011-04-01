@@ -18,6 +18,7 @@
     <orm.connection.url>jdbc:postgresql://localhost:5432/scalaqa</orm.connection.url>
     <orm.connection.username>scalaqa</orm.connection.username>
     <orm.connection.password>scalaqa</orm.connection.password>
+    <scalaqa.maxFileSize>2097152</scalaqa.maxFileSize><!-- 2M -->
   </properties>
 
   <dependencies>
@@ -89,7 +90,7 @@
         <artifactId>maven-jetty-plugin</artifactId>
         <version>6.1.19</version>
         <configuration>
-          <scanIntervalSeconds>5</scanIntervalSeconds>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
           <contextPath>/</contextPath>
           <connectors>
             <connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">

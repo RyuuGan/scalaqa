@@ -1,22 +1,24 @@
 package ru.circumflex
 
-import ru.circumflex._, core._, orm._
+import ru.circumflex._, core._, web._, freemarker._
+import org.apache.commons.fileupload.disk.DiskFileItemFactory
+import java.io._
 
 package object tutorials {
-
   val log = new Logger("ru.circumflex.tutorials")
+  val uploadsRoot = new File(servletContext.getRealPath("/public/uploads"))
+  val ff = new DiskFileItemFactory(2048, uploadsRoot)
+  val maxFileSize = cx.get("scalaqa.maxFileSize").map(_.toString.toLong).getOrElse(2097152l)
 
-  def fetchTags = {
-    val t = Tag AS "t"
-    val count = SELECT(COUNT(t.id)).FROM(t).unique.get
-    'tags := SELECT(t.name AS "tagname", COUNT(t.id) AS "count")
-        .FROM(t)
-        .GROUP_BY(t.name)
-        .list.map { m =>
-      val c = m("count").asInstanceOf[Long]
-      val w = math.ceil(c * 6.0 / count).toInt
-      m + ("weight" -> w)
+  def json(template: String): Nothing = {
+    val callback = param("callback")
+    if (callback != "") {
+      response.contentType("application/javascript")
+      val content = ftl2string(template)
+      send(callback + "(" + content + ")")
+    } else {
+      response.contentType("application/json")
+      ftl(template)
     }
   }
-
 }

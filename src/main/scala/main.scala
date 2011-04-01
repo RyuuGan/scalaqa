@@ -1,156 +1,119 @@
 package ru.circumflex.tutorials
 
 import ru.circumflex._, core._, web._, freemarker._, orm._
-
 import java.util.Date
-
-import org.apache.commons.fileupload.util.Streams
+import org.apache.commons.io.FileUtils
 import org.apache.commons.fileupload.FileItem
-import scala.tools.nsc.io.Directory
 import java.io.File
-
-import scala.collection.mutable.Map
 
 class Main extends RequestRouter {
 
   'currentDate := new Date
 
-  get("/") = forward("/index.html")
+  any("/admin/?*") = new AdminRouter
 
+  get("/") = forward("/index.html")
   get("/index.html") = {
-    fetchTags
     'questions := Question.findLastAnswered
     ftl("index.ftl")
   }
 
+  get("/tags") = {
+    'tags := Tag.findWeights
+    ftl("/snippets/tags.ftl")
+  }
+
   get("/ask/?") = {
-    fetchTags
     'topics := Topic.all
     ftl("ask.ftl")
   }
 
   post("/ask/?") = {
-
-    // getting all fields name using apache commons file upload
-    val m = Map.empty[String, String]
-    val i = request.body.parseFileStreams
-    while (i.hasNext) {
-      val itemStream = i.next
-      val name = itemStream.getFieldName
-      val stream = itemStream.openStream
-      if (itemStream.isFormField)
-        m += (name -> Streams.asString(stream,"UTF-8").trim)
+    request.body.parseFileItems(ff) foreach { fi =>
+      if (fi.isFormField)
+        ctx(fi.getFieldName) = fi.getString("utf-8").trim
       else {
-        val un = m.getOrElse("username","").toLowerCase.trim
-        if (un != "") {
-          m += ("file_name" -> (un + "/" + itemStream.getName))
-          val dir = Directory(servletContext.getRealPath("/public/uploads/" + un + "/"))
-          if (!dir.exists)
-            dir.createDirectory(true)
-
-          val out = new java.io.FileOutputStream(servletContext.getRealPath("/public/uploads/"
-              + un + "/" + itemStream.getName))
-          Streams.copy(stream, out, true)
+        if (fi.getSize > maxFileSize) {
+          'errors := List(new Msg("Question.fileSize", "size" -> FileUtils.byteCountToDisplaySize(maxFileSize)))
+          json("/response.json.ftl")
         }
-        else {
-          m += ("file_name" -> "")
-        }
+        ctx("file") = fi
       }
     }
-
-    val q = new Question()
-    q.username := m.getOrElse("username", "").trim
-    q.title := m.getOrElse("title", "").trim
-    q.body := m.getOrElse("body", "").trim
-    m.getOrElse("email", "").trim match {
-      case "" => q.email.setNull
-      case v => q.email := v
-    }
-    q.topic.field := m("topic").toString.toLong
-    m("file_name") match {
-      case "" => q.attachment.setNull
-      case v => q.attachment := v
-    }
-    try {
+    try tx {
+      val q = new Question()
+      q.username := ctx.getAs[String]("username").getOrElse("")
+      q.title := ctx.getAs[String]("title").getOrElse("")
+      q.body := ctx.getAs[String]("body").getOrElse("")
+      ctx.getAs[String]("email") match {
+        case Some(e) if (e != "") => q.email := e
+        case _ =>
+      }
+      ctx.get("topic").map(_.toString.toLong).flatMap(id => Topic.get(id)) match {
+        case Some(t: Topic) => q.topic := t
+        case _ =>
+          'errors := List(new Msg("Question.topic.unknown"))
+          json("/response.json.ftl")
+      }
+      ctx.get("file") match {
+        case Some(fi: FileItem) =>
+          val dstRoot = new File(uploadsRoot, md5(q.username()))
+          val dst = new File(dstRoot, fi.getName)
+          fi.write(dst)
+          q.attachment := dst.getCanonicalPath
+        case _ =>
+      }
       q.INSERT()
-      redirect("/")
+      'info := List(new Msg("Question.success"))
+      'redirect := "/"
+      json("/response.json.ftl")
     } catch {
       case e: ValidationException =>
-        flash("errors") = e.errors.by { e =>
-          e.param("field") match {
-            case Some(f: Field[_, _]) => f.name
-            case _ => ""
-          }
-        }
-        redirect("/ask")
+        'errors := e.errors
+        json("/response.json.ftl")
     }
   }
 
   get("/questions/?") = {
-    fetchTags
-    'message := new Msg("message.allQuestions")
     'questions := Question.findAnswered
-    ftl("questions.ftl")
+    ftl("/questions/list.ftl")
   }
 
   get("/questions/tagged/:id") = {
-    fetchTags
-    'message := new Msg("message.tag") + uri("id").trim
     'questions := Question.findTagged(uri("id").trim)
-    ftl("questions.ftl") //tagged_questions
+    ftl("/questions/list.ftl")
   }
 
-  get("/questions/:id") = {
-    var id:Long = 0
-    try {
-      id = uri("id").toLong
-    } catch{
+  get("/questions/:id") = try {
+    Question.get(param("id").toLong) match {
+      case Some(q) =>
+        'question := q
+        ftl("/questions/view.ftl")
       case _ => sendError(404)
     }
-    fetchTags
-    val q: Question = Question.get(id) match {
-      case Some(q) => q
-      case _ => null
-    }
-    if (q == null) {
-      sendError(404)
-    }
-    'questionTags := Tag.findByQuestion(q)
-    'question := Question.get(id)
-    ftl("question_id.ftl")
+  } catch {
+    case e: Exception => sendError(404)
   }
 
   get("/topics/?") = {
-    fetchTags
     'topics := Topic.all
     ftl("topics.ftl")
   }
   get("/topics/:id") = {
-    fetchTags
-    'message := new Msg("message.topic") + uri("id").trim
     'questions := Question.findByTopic(uri("id").trim)
-    ftl("questions.ftl")
+    ftl("/questions/list.ftl")
   }
 
   get("/search/?") = {
-    if (param("q").trim.isEmpty) {
-      redirect("/")
-    }
-    fetchTags
-    'message := new Msg("message.search") + param("q").trim
+    if (param("q").trim.isEmpty) redirect("/")
     'questions := Question.search(param("q").trim)
-    ftl("questions.ftl")
+    ftl("/questions/list.ftl")
   }
 
-  get("/download/?") = {
-    val filename = param("attachment").trim
-    val f = new File(servletContext.getRealPath("/public/uploads/" + filename))
-    if (f.exists)
-      sendFile(f, f.getName)
-    else
-      redirect("/")
+  get("/download/*") = {
+    val f = new File(servletContext.getRealPath("/public/uploads/" + uri(1)))
+    if (f.exists) sendFile(f, f.getName)
+    else redirect("/")
   }
-
-  any("/admin/?*") = new AdminRouter
 
 }

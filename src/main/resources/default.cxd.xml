@@ -3,43 +3,11 @@
   <deployment prefix="ru.circumflex.tutorials">
     <Topic>
       <name>General questions</name>
-      <sendTo>feedback@rfei.ru</sendTo>
+      <sendTo>circumflex@whiteants.net</sendTo>
     </Topic>
     <Topic>
-      <name>Custom question</name>
-      <sendTo>feedback@rfei.ru</sendTo>
-    </Topic>
-    <Topic>
-      <name>Выбор обучения</name>
-      <sendTo>feedback@rfei.ru</sendTo>
-    </Topic>
-    <Topic>
-      <name>Оплата обучения</name>
-      <sendTo>feedback@rfei.ru</sendTo>
-    </Topic>
-    <Topic>
-      <name>Работа партнеров РФЭИ</name>
-      <sendTo>feedback@rfei.ru</sendTo>
-    </Topic>
-    <Topic>
-      <name>Работа сотрудников РФЭИ</name>
-      <sendTo>feedback@rfei.ru</sendTo>
-    </Topic>
-    <Topic>
-      <name>Вопрос ректору, не попадающий в классификацию</name>
-      <sendTo>feedback@rfei.ru</sendTo>
-    </Topic>
-    <Topic>
-      <name>Предложение по улучшению работы РФЭИ</name>
-      <sendTo>feedback@rfei.ru</sendTo>
-    </Topic>
-    <Topic>
-      <name>Предложение по улучшению качества учебного курса</name>
-      <sendTo>feedback@rfei.ru</sendTo>
-    </Topic>
-    <Topic>
-      <name>Другое</name>
-      <sendTo>feedback@rfei.ru</sendTo>
+      <name>Miscellaneous</name>
+      <sendTo>circumflex@whiteants.net</sendTo>
     </Topic>
 
     <Administrator>
@@ -57,73 +25,39 @@
     
     <Question>
       <username>sl</username>
-      <body>How?</body>
-      <title>making superior things</title>
+      <body><![CDATA[
+Hello, I am interested in building Circumflex from scratch. Could you please provide me with
+detailed instructions on how to checkout Circumflex from GitHub and build it? TIA
+          ]]></body>
+      <title>How do I build Circumflex from scratch?</title>
       <email>sl@whiteants.net</email>
       <topic>
         <Topic name="General questions"/>
       </topic>
+      <tags>
+        <Tag>
+          <name>build issues</name>
+        </Tag>
+        <Tag>
+          <name>manual request</name>
+        </Tag>
+      </tags>
     </Question>
     <Question>
-      <username>inca</username>
-      <body>What?</body>
-      <title>get excellent marks</title>
-      <answer>just study</answer>
+      <username>sl</username>
+      <body><![CDATA[
+It's not that I am whining or nagging, but your documentation **is** poor. And it sucks.
+          ]]></body>
+      <title>More docs??</title>
       <email>inca@whiteants.net</email>
       <topic>
-        <Topic name="Custom question"/>
+        <Topic name="General questions"/>
       </topic>
+      <tags>
+        <Tag>
+          <name>manual request</name>
+        </Tag>
+      </tags>
     </Question>
-    <Question>
-      <username>ryu</username>
-      <body>Why?</body>
-      <title>serious</title>
-      <email>ryu@whiteants.net</email>
-      <topic>
-        <Topic name="Выбор обучения"/>
-      </topic>
-      <answer>Because it is not bad</answer>
-    </Question>
-    <Question>
-      <username>ryu</username>
-      <body>What about?</body>
-      <title>new features</title>
-      <email>ryu@whiteants.net</email>
-      <topic>
-        <Topic name="Custom question"/>
-      </topic>
-    </Question>
-
-    <Tag>
-      <name>выбор обучения</name>
-      <question>
-        <Question body="How?" />
-      </question>
-    </Tag>
-    <Tag>
-      <name>деньги</name>
-      <question>
-        <Question body="What about?"/>
-      </question>
-    </Tag>
-    <Tag>
-      <name>диплом</name>
-      <question>
-        <Question body="What about?" />
-      </question>
-    </Tag>
-    <Tag>
-      <name>обучение</name>
-      <question>
-        <Question body="What about?" />
-      </question>
-    </Tag>
-    <Tag>
-      <name>поступление</name>
-      <question>
-        <Question body="What?" />
-      </question>
-    </Tag>
-
   </deployment>
 </deployments>
