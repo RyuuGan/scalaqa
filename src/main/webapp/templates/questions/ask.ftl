@@ -1,7 +1,7 @@
 [#ftl]
 
 [#assign content]
-INDEX PAGE
+ASK A QUESTION
 [/#assign]
 
 [#include "/layout.ftl"/]

@@ -1,7 +1,7 @@
 [#ftl]
 
 [#assign content]
-INDEX PAGE
+  EDIT FORM
 [/#assign]
 
 [#include "/layout.ftl"/]

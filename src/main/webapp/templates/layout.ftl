@@ -1,48 +1,41 @@
 [#ftl]
-[#macro layout]
 <!doctype html>
 <html>
 <head>
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-  <title>Scala QA</title>
-  <link rel="stylesheet"
-        href="/public/css/main.css"
+  <title>Scala QA [#if title?? && title != ""]&mdash; ${title}[/#if]</title>
+  <link rel="stylesheet/less"
+        href="/css/main.less"
         type="text/css"
         media="screen, projection"/>
   <script type="text/javascript"
           src="/public/js/jquery-1.4.3.min.js">
   </script>
   <script type="text/javascript"
-          src="/public/js/tags.js">
+          src="/public/js/less.js">
   </script>
+  ${scripts!}
 </head>
 <body>
-  <header id="header">
-    <h1>
-      <a href="/" title="Home">ScalaQA: Circumflex tutorials</a>
-    </h1>
-    <nav>
-      <ul>
-        [#list tags as t]
-          <li class="weight-${t.weight}"><a href="/questions/tagged/${t.tagname}">${t.tagname}</a></li>
-        [/#list]
-      </ul>
-    </nav>
-  </header>
+  <div id="header">
+    <h1><a href="/" title="Home">ScalaQA</a></h1>
+    <div id="tags-nav">
+      <img src="/img/loading.gif" alt="Loading..."/>
+    </div>
+  </div>
   <section id="content">
-    [#nested /]
+    ${content!}
   </section>
-  <footer id="footer">
+  <div id="footer">
     <address>
       <span class="copyright">&copy; 2010</span>
-      <a href="http://github.com/ryuugan/scalaqa">ScalaQA</a>
+      <a href="http://github.com/RyuuGan/scalaqa">ScalaQA</a>
       <span>by</span>
       <a href="http://whiteants.net" rel="external">whiteants.net</a>
     </address>
     <form id="search" action="/search" method="get">
       <input type="text" name="q" placeholder="Search"/>
     </form>
-  </footer>
+  </div>
 </body>
 </html>
-[/#macro]

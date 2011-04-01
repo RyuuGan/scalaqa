@@ -3,6 +3,7 @@ package ru.circumflex
 import ru.circumflex._, core._, web._, freemarker._
 import org.apache.commons.fileupload.disk.DiskFileItemFactory
 import java.io._
+import tutorials._
 
 package object tutorials {
   val log = new Logger("ru.circumflex.tutorials")
@@ -20,5 +21,12 @@ package object tutorials {
       response.contentType("application/json")
       ftl(template)
     }
+  }
+
+  def principal: Option[Administrator] = session.getAs[Administrator]("principal")
+
+  def auth(block: Administrator => Unit) = principal match {
+    case Some(a) => block(a)
+    case _ => sendRedirect("/login")
   }
 }

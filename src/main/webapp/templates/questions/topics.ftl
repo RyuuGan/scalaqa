@@ -1,7 +1,7 @@
 [#ftl]
 
 [#assign content]
-INDEX PAGE
+LIST TOPICS
 [/#assign]
 
 [#include "/layout.ftl"/]

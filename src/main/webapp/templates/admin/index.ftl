@@ -1,7 +1,7 @@
 [#ftl]
 
 [#assign content]
-INDEX PAGE
+  ADMIN INDEX PAGE
 [/#assign]
 
 [#include "/layout.ftl"/]

@@ -12,23 +12,72 @@ class Main extends RequestRouter {
 
   any("/admin/?*") = new AdminRouter
 
-  get("/") = forward("/index.html")
-  get("/index.html") = {
+  get("/") = {
     'questions := Question.findLastAnswered
     ftl("index.ftl")
   }
-
   get("/tags") = {
     'tags := Tag.findWeights
     ftl("/snippets/tags.ftl")
   }
+  get("/topics/?") = {
+    'topics := Topic.all
+    ftl("/questions/topics.ftl")
+  }
+  get("/topics/:id") = {
+    'questions := Question.findByTopic(uri("id").trim)
+    ftl("/questions/list.ftl")
+  }
 
-  get("/ask/?") = {
+  get("/download/*") = {
+    val f = new File(servletContext.getRealPath("/public/uploads/" + uri(1)))
+    if (f.exists) sendFile(f, f.getName)
+    else redirect("/")
+  }
+
+  get("/login") = ftl("/admin/login.ftl")
+  post("/login/?") = Administrator.findByIdentity(param("username").trim, param("password")) match {
+    case Some(a) =>
+      session("principal") = a.username
+      redirect("/admin")
+    case _ =>
+      'errors := List(new Msg("login.error"))
+      session.remove("principal")
+      json("/response.json.ftl")
+  }
+
+  any("/questions") = forward(uri(0) + "/")
+  any("/questions/*") = new QuestionsRouter
+
+}
+
+class QuestionsRouter extends RequestRouter("/questions") {
+  get("/") = {
+    val q = param("q").trim
+    if (q == "")
+      'questions := Question.findAnswered
+    else 'questions := Question.search(q)
+    ftl("/questions/list.ftl")
+  }
+  get("/tagged/:id") = {
+    'questions := Question.findTagged(uri("id").trim)
+    ftl("/questions/list.ftl")
+  }
+  get("/:id") = try {
+    Question.get(param("id").toLong) match {
+      case Some(q) =>
+        'question := q
+        ftl("/questions/view.ftl")
+      case _ => sendError(404)
+    }
+  } catch {
+    case e: Exception => sendError(404)
+  }
+  get("/ask") = {
     'topics := Topic.all
     ftl("ask.ftl")
   }
-
-  post("/ask/?") = {
+  post("/ask") = {
     request.body.parseFileItems(ff) foreach { fi =>
       if (fi.isFormField)
         ctx(fi.getFieldName) = fi.getString("utf-8").trim
@@ -73,47 +122,4 @@ class Main extends RequestRouter {
         json("/response.json.ftl")
     }
   }
-
-  get("/questions/?") = {
-    'questions := Question.findAnswered
-    ftl("/questions/list.ftl")
-  }
-
-  get("/questions/tagged/:id") = {
-    'questions := Question.findTagged(uri("id").trim)
-    ftl("/questions/list.ftl")
-  }
-
-  get("/questions/:id") = try {
-    Question.get(param("id").toLong) match {
-      case Some(q) =>
-        'question := q
-        ftl("/questions/view.ftl")
-      case _ => sendError(404)
-    }
-  } catch {
-    case e: Exception => sendError(404)
-  }
-
-  get("/topics/?") = {
-    'topics := Topic.all
-    ftl("topics.ftl")
-  }
-  get("/topics/:id") = {
-    'questions := Question.findByTopic(uri("id").trim)
-    ftl("/questions/list.ftl")
-  }
-
-  get("/search/?") = {
-    if (param("q").trim.isEmpty) redirect("/")
-    'questions := Question.search(param("q").trim)
-    ftl("/questions/list.ftl")
-  }
-
-  get("/download/*") = {
-    val f = new File(servletContext.getRealPath("/public/uploads/" + uri(1)))
-    if (f.exists) sendFile(f, f.getName)
-    else redirect("/")
-  }
-
 }

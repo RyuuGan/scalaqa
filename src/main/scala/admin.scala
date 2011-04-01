@@ -3,39 +3,25 @@ package ru.circumflex.tutorials
 import ru.circumflex._, core._, web._, freemarker._, orm._
 
 class AdminRouter extends RequestRouter("/admin") {
-
-  get("/?") = if (session.get("admin").isEmpty)
-    redirect("/admin/login")
-  else redirect("/admin/index.html")
-
-  get("/login/?") = {
-    ftl("login.ftl")
+  auth { admin =>
+    get("/?") = ftl("/admin/index.ftl")
+    get("/logout") = {
+      session.remove("principal")
+      redirect("/")
+    }
+    post("/login") = Administrator.findByIdentity(param("username").trim, param("password")) match {
+      case Some(a) =>
+        session("principal") = a
+        redirect("/admin")
+    }
   }
-
-  get("/logout/?") = {
-    session.remove("admin")
-    redirect("/")
-  }
-
-  post("/login/?") = Administrator.findByIdentity(param("username").trim, param("password").trim) match {
-    case Some(a) =>
-      session("admin") = a.username
-      redirect("/admin")
-    case _ =>
-      'msg_login := new Msg("login.error")
-      session.remove("admin")
-      ftl("/login.ftl")
-  }
-
-  if (session.get("admin").isEmpty)
-    sendError(403)
 
   get("/index.html") = {
     'questions := Question.findUnanswered
     ftl("administrator.ftl")
   }
 
-  get("/edit/:id") = try {
+  get("/question/:id/edit") = try {
     Question.get(param("id").toLong) match {
       case Some(q) =>
         'question := q
@@ -47,7 +33,7 @@ class AdminRouter extends RequestRouter("/admin") {
     case e: Exception => sendError(404)
   }
 
-  post("/edit/questions/:id") = Question.get(uri("id").toLong) match {
+  post("/question/:id") = Question.get(param("id").toLong) match {
     case Some(q: Question) =>
         val r = request.body.asXml
         q.answer := (r \ "answer").text.trim
@@ -69,5 +55,14 @@ class AdminRouter extends RequestRouter("/admin") {
         }
         redirect("/admin/index.html")
     case _ =>sendError(404)
+  }
+
+  delete("/question/:id") = Question.get(param("id").toLong) match {
+    case Some(q: Question) =>
+      q.DELETE_!
+      'info := List(new Msg("Question.deleted", "no" -> q.id()))
+      'redirect := "/admin"
+      json("/response.json.ftl")
+    case _ => sendError(404)
   }
 }
