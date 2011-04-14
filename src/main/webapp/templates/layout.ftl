@@ -23,28 +23,47 @@
   <script type="text/javascript"
           src="/public/js/application.js">
   </script>
-  ${scripts!}
+${scripts!}
 </head>
 <body>
-  <div id="header">
-    <h1><a href="/" title="Home">ScalaQA</a></h1>
-    <div id="tags-nav">
-      <img src="/img/loading.gif" alt="Loading..."/>
+<div id="header">
+  <div class="wrap">
+    <h1><a href="/" title="Home">Вопросы и ответы</a></h1>
+    <div class="search">
+      <input/>
     </div>
   </div>
-  <section id="content">
-    ${content!}
-  </section>
-  <div id="footer">
-    <address>
-      <span class="copyright">&copy; 2010</span>
-      <a href="http://github.com/RyuuGan/scalaqa">ScalaQA</a>
-      <span>by</span>
-      <a href="http://whiteants.net" rel="external">whiteants.net</a>
-    </address>
-    <form id="search" action="/search" method="get">
-      <input type="text" name="q" placeholder="Search"/>
-    </form>
+</div>
+<div id="content">
+  <div class="wrap">
+    <div id="main">
+      <div id="top-nav">
+        <ul id="main-nav">
+          <li><a href="#" class="current">Главная</a></li>
+          <li><a href="#">Обсуждения</a></li>
+          <li><a href="#">Люди</a></li>
+        </ul>
+        <ul id="user-nav">
+          <li><a href="#">войти</a></li>
+          <li>•</li>
+          <li><a href="#">зарегистрироваться</a></li>
+        </ul>
+      </div>
+    </div>
+    <div id="sidebar">
+      sidebar<br/>
+      sidebar<br/>
+      sidebar<br/>
+      sidebar<br/>
+      sidebar<br/>
+      sidebar<br/>
+      sidebar<br/>
+      sidebar<br/>
+    </div>
   </div>
+</div>
+<div id="footer">
+  footer
+</div>
 </body>
 </html>

@@ -1,0 +1,122 @@
+.gradient(@from, @to) {
+  background: -moz-linear-gradient(-90deg, @from, @to);
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(@from), to(@to));
+}
+
+body {
+  background:#333;
+  font-family: 'myriad pro', sans-serif;
+}
+body,ul,ol,h1,h2,h3,h4,h5,h6,pre,blockquote,address {
+  margin:0;
+  padding:0;
+  list-style:none outside;
+  font-weight:normal;
+}
+
+a, a:hover, a:visited {
+  text-decoration:none;
+  color:#333;
+}
+
+#header .wrap, #content, #footer {
+  width:980px;
+  margin:0 auto;
+}
+
+#header {
+  .gradient(#97c1e0, #3379ad);
+  .wrap {
+    overflow:hidden;
+  }
+  h1 {
+    background:url("/img/rfei_logo.png") transparent top left no-repeat;
+    padding-left:140px;
+    margin:0;
+    line-height:72px;
+    width:580px;
+    float:left;
+    a {
+      font-size:smaller;
+      color:#fff;
+    }
+
+  }
+  .search {
+    overflow:hidden;
+    line-height:72px;
+    text-align:center;
+    .gradient(#8fb6d3, #3074a4);
+    input {
+      border-radius:16px;
+      font-size:16px;
+      border:0;
+    }
+  }
+}
+
+#content {
+  .wrap {
+    display:table;
+    width:100%;
+  }
+  #main {
+    display:table-cell;
+    background:#fff;
+    width:720px;
+  }
+  #sidebar {
+    display:table-cell;
+    background:#eee;
+  }
+}
+
+#top-nav {
+  overflow:hidden;
+}
+
+#main-nav {
+  float:left;
+  margin:0 6px;
+  li {
+    float:left;
+    margin:0 6px;
+    a {
+      display:block;
+      padding:4px 8px;
+      background:#eee;
+      color:#777;
+      border:1px solid #ccc;
+      border-top:0;
+      border-bottom-left-radius:12px;
+      border-bottom-right-radius:12px;
+      &.current {
+        padding:8px 16px;
+        .gradient(#3379ad,#19609c);
+        color:#fff;
+        border:0;
+      }
+    }
+  }
+}
+
+#user-nav {
+  float:right;
+  li {
+    float:left;
+    font-size:smaller;
+    color:#777;
+    a {
+      padding:4px 16px;
+      text-decoration:underline;
+      color:#777;
+    }
+  }
+}
+
+
+
+
+
+#footer {
+}

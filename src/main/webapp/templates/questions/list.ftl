@@ -1,7 +1,4 @@
 [#ftl]
-
-[#assign content]
+<div id="index">
   LIST QUESTIONS
-[/#assign]
-
-[#include "/layout.ftl"/]
+</div>
