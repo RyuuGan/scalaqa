@@ -1,6 +1,6 @@
 package ru.circumflex.tutorials
 
-import ru.circumflex._, core._, web._, orm._
+import ru.circumflex._, core._, web._, orm._, freemarker._
 import java.util.Date
 import org.apache.commons.io.FileUtils
 import org.apache.commons.fileupload.FileItem
@@ -12,7 +12,7 @@ class Main extends RequestRouter {
 
   any("/admin/?*") = new AdminRouter
 
-  get("/") = forward("/questions/")
+  get("/") = partialFtl("/index.ftl")
   get("/tags") = {
     'tags := Tag.findWeights
     partialFtl("/snippets/tags.ftl")
