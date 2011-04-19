@@ -29,16 +29,18 @@ a:hover {
   text-decoration:none;
   color:#808080;
 }
-
 #header > .wrap, #content, #footer {
   width:980px;
   margin:0 auto;
 }
+.earlier {
+    font-size:12px;
+    line-height:2;
+    float: right;
+}
 
 // Layout
-#sidebar {
-  padding:16px;
-}
+// Header
 #header {
   .gradient(#97c1e0, #3379ad);
   > .wrap {
@@ -70,7 +72,6 @@ a:hover {
     }
   }
 }
-
 #content {
   > .wrap {
     display:table;
@@ -83,8 +84,12 @@ a:hover {
   width:720px;
 }
 #sidebar {
+  padding:16px;
   display:table-cell;
   background:#eee;
+  .author {
+  font-size:14px;
+  color:#333;}
 }
 
 #footer {
@@ -100,7 +105,6 @@ a:hover {
   border-bottom-left-radius:16px;
   border-bottom-right-radius:16px;
 }
-
 
 #main-nav {
   float:left;
@@ -128,7 +132,6 @@ a:hover {
   }
 }
 
-
 #user-nav {
   float:right;
   line-height:24px;
@@ -143,6 +146,7 @@ a:hover {
 }
 
 // Ask form
+
 #ask-form {
   clear:both;
   padding:16px;
@@ -197,7 +201,6 @@ a:hover {
       }
     }
     .submit {
-  //    float:right;
       input {
         background:#eee;
         border-radius:16px;
@@ -213,8 +216,8 @@ a:hover {
 }
 
 // News
-#news {
 
+#news {
   padding:16px;
   h2 {
     padding:48px;
@@ -234,103 +237,100 @@ a:hover {
       border-bottom:1px solid #eee;
     }
   }
-}
-.floating {
-  float:left;
-}
-.earlier, .text, .date, .praice {
-  display:inline;
-  line-height:3;
-}
-.praice, .earlier {
-  float: right;
-}
-.earlier {
-  font-size:12px;
-  line-height:2;
-}
-.text {
-margin-left:8px;
+  .floating {
+    float:left;
+  }
+  .text, .date, .praice {
+    display:inline;
+    line-height:3;
+  }
+  .praice, .earlier {
+    float: right;
+  }
+  .text {
+    margin-left:8px;
+  }
 }
 
- // Горячие обсуждения
-   h2 {
+ // Hot discussions
+
+#hot-discussions {
+  h2 {
     margin-left:16px;
+    margin-top:16px;
   }
-#hot-discuss {
-   li > div{
-    margin-bottom:8px;
-    border-bottom:1px solid #eee;
+  #hot-discuss {
+    li > div{
+      overflow:hidden;
+      padding-bottom:8px;
+      border-bottom:1px solid #eee;
+    }
+    margin:16px;
+    padding:16px;
+    border-radius:16px;
+    border:1px solid #eee;
+    .small-stuff {
+      list-style: disc;
+      font-size:12px;
+    }
+    .question{
+      color:#0D5E96;
+    }
+    .tags {
+      font-size:12px;
+    }
+    li {
+      display:inline;
+    }
+    .floating {
+      float:left;
+      margin: 16px 16px 16px 0;
+    }
+    h3 {
+      line-height: 2;
+    }
   }
-  margin:16px;
-  padding:16px;
-  border-radius:16px;
-  border:1px solid #eee;
-
-.small-stuff {
-    list-style: disc;
-    font-size:12px;
-}
-.question{
-  color:#0D5E96;
-}
-.tags {
-    font-size:12px;
-  }
-li {
-
-   display:inline;
 }
 
-.floating {
-  float:left;
-  margin: 16px 16px 16px 0;
-}
-h3 {
-  line-height: 2;
-}
-}
+// On air
 
 #on-air {
   overflow:hidden;
   padding:16px;
   border-radius:16px;
   background-color:#fff;
-  >ul {
-  border-bottom:1px solid #eee;
-}
-}
-
-#on-air li{
-    display:inline;
-}
-.center {
-  text-align:center;
-}
-#sidebar .author {
-  color:#333;
-}
-.author, .question-small, .idea-small {
-  font-size:14px;
-  line-height:2;
-}
-.question-small {
-  color:#0d5e96;
-  &:hover {
-     color:#0d5e96;
+  > ul {
+    border-bottom:1px solid #eee;
+    li{
+      display:inline;
+    }
   }
-}
-.idea-small {
-  color:#648e66;
-  &:hover {
-     color:#648e66;
+  .center {
+    text-align:center;
+  }
+  .question-small, .idea-small {
+    font-size:14px;
+    line-height:2;
+  }
+  .question-small {
+    color:#0d5e96;
+    &:hover {
+      color:#0d5e96;
+    }
+  }
+  .idea-small {
+    color:#648e66;
+    &:hover {
+      color:#648e66;
+    }
   }
 }
 
-//Активные участники
+// Active users
+
 #users-wrap {
   overflow:hidden;
-  border-bottom:1px solid #eee;
+  border-bottom:1px solid #ccc;
 }
 #left {
   float:left;
@@ -344,17 +344,29 @@ h3 {
   margin:16px 0;
 }
 
-//Подписаться
+// Subscribe
+
 #subs {
+  clear:both;
   overflow:hidden;
   border-radius:16px;
   background-color:#fff;
   padding:8px;
   a {
-  margin:8px;
-  font-size:12px;
+    margin:8px;
+    font-size:12px;
   }
-  li{
+  li {
     border-bottom:1px solid #eee;
   }
+}
+
+//Footer
+
+#footer {
+  padding:8px 0;
+  font-size:12px;
+  display:block;
+  text-align:center;
+  background-color:#fff;
 }

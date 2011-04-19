@@ -16,13 +16,13 @@
     <form method="post" action="/ask">
       <ul>
         <li>
-          <a href="#">
+          <a href="ask-form.ftl#">
             <img src="/img/question.png"/>
             <span>Задать вопрос</span>
           </a>
         </li>
         <li>
-          <a href="#" class="active">
+          <a href="ask-form.ftl#" class="active">
             <img src="/img/plus.png"/>
             <span>Высказать идею</span>
           </a>
