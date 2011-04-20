@@ -38,6 +38,22 @@ a:hover {
     line-height:2;
     float: right;
 }
+.question {
+  padding-left:18px;
+  background:url("/img/question.png") transparent top left no-repeat;
+  color:#0D5E96;
+}
+.idea {
+  padding-left:18px;
+  background:url("/img/plus.png") transparent top left no-repeat;
+  color:#648e66;
+}
+.tags, .small-stuff{
+  > li {
+    display:inline;
+  }
+  font-size:12px;
+}
 
 // Layout
 // Header
@@ -244,7 +260,7 @@ a:hover {
     display:inline;
     line-height:3;
   }
-  .praice, .earlier {
+  .praice {
     float: right;
   }
   .text {
@@ -269,25 +285,6 @@ a:hover {
     padding:16px;
     border-radius:16px;
     border:1px solid #eee;
-
-    .discussion {
-      .question {
-        padding-left:18px;
-        background:url("/img/question.png") transparent top left no-repeat;
-        color:#0D5E96;
-      }
-      .idea {
-        padding-left:18px;
-        background:url("/img/plus.png") transparent top left no-repeat;
-        color:#648e66;
-      }
-      .tags, .small-stuff{
-        font-size:12px;
-      }
-    }
-    li {
-      display:inline;
-    }
     .floating {
       float:left;
       margin: 16px 16px 16px 0;
@@ -389,9 +386,17 @@ a:hover {
   border:1px solid #eee;
   overflow:hidden;
 }
+#discuss-list {
+  padding:32px;
+  > div {
+    margin:32px;
+    border-bottom:1px solid #eee;
+  }
+}
 #all-discuss-button {
   > a{
     color:#333;
+    text-decoration:none;
   }
   padding:24px 0;
   background:url("/img/all-discuss.png")  transparent top left no-repeat;
@@ -418,10 +423,20 @@ a:hover {
   width:227px;
   float:right;
 }
-ul.filters {
-  padding:0 16px;
+.filters {
   clear:both;
-  > li{
-    display:inline;
+  div {
+    background-color:#bbb;
+    text-align:center;
+    width:171px;
+    float:left;
+    a{
+      font-size:14px;
+      color:white;
+      &.active {
+        text-decoration:none;
+        color:#333;
+      }
+    }
   }
 }
