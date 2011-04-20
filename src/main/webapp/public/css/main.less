@@ -269,15 +269,21 @@ a:hover {
     padding:16px;
     border-radius:16px;
     border:1px solid #eee;
-    .small-stuff {
-      list-style: disc;
-      font-size:12px;
-    }
-    .question{
-      color:#0D5E96;
-    }
-    .tags {
-      font-size:12px;
+
+    .discussion {
+      .question {
+        padding-left:18px;
+        background:url("/img/question.png") transparent top left no-repeat;
+        color:#0D5E96;
+      }
+      .idea {
+        padding-left:18px;
+        background:url("/img/plus.png") transparent top left no-repeat;
+        color:#648e66;
+      }
+      .tags, .small-stuff{
+        font-size:12px;
+      }
     }
     li {
       display:inline;
@@ -369,4 +375,53 @@ a:hover {
   display:block;
   text-align:center;
   background-color:#fff;
+}
+
+
+// Discuss-page
+
+// Discussions
+
+#discussions {
+  margin:32px 16px 16px 16px;
+//  padding:16px;
+  border-radius:16px;
+  border:1px solid #eee;
+  overflow:hidden;
+}
+#all-discuss-button {
+  > a{
+    color:#333;
+  }
+  padding:24px 0;
+  background:url("/img/all-discuss.png")  transparent top left no-repeat;
+  font-size:20px;
+  text-align:center;
+  border-right:1px solid #eee;
+  width:226px;
+  float:left;
+}
+#questions-button {
+  padding:24px 0;
+  font-size:20px;
+  background:url("/img/question_64.png")  transparent top left no-repeat;
+  text-align:center;
+  border-right:1px solid #eee;
+  width:227px;
+  float:left;
+}
+#ideas-button {
+  padding:24px 0;
+  font-size:20px;
+  background:url("/img/idea_64.png")  transparent top left no-repeat;
+  text-align:center;
+  width:227px;
+  float:right;
+}
+ul.filters {
+  padding:0 16px;
+  clear:both;
+  > li{
+    display:inline;
+  }
 }

@@ -1,9 +1,9 @@
 [#ftl]
 <div id="top-nav">
   <ul id="main-nav">
-    <li><a href="ask-form.ftl#" class="current">Главная</a></li>
-    <li><a href="ask-form.ftl#">Обсуждения</a></li>
-    <li><a href="ask-form.ftl#">Люди</a></li>
+    <li><a href="/" class="current">Главная</a></li>
+    <li><a href="/discussions/">Обсуждения</a></li>
+    <li><a href="#">Люди</a></li>
   </ul>
   <ul id="user-nav">
     <li><a href="ask-form.ftl#">войти</a></li>
