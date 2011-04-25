@@ -122,7 +122,7 @@
         </executions>
         <configuration>
           <packages>
-            <param>ru.circumflex.tutorials</param>
+            <param>ru.circumflex.tutorials.model</param>
           </packages>
         </configuration>
         <dependencies>

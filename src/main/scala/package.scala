@@ -4,6 +4,7 @@ import ru.circumflex._, core._, web._, freemarker._
 import org.apache.commons.fileupload.disk.DiskFileItemFactory
 import java.io._
 import tutorials._, model._
+import java.security.MessageDigest;
 
 package object tutorials {
   val log = new Logger("ru.circumflex.tutorials")
@@ -33,5 +34,18 @@ package object tutorials {
   def auth(block: User => Unit) = principal match {
     case Some(a) => block(a)
     case _ => sendRedirect("/login")
+  }
+
+  def SHA_256(s:String) = {
+    val md = MessageDigest.getInstance("SHA-256")
+    md.update(s.getBytes)
+
+    val sb = new scala.collection.mutable.StringBuilder
+    for (byte <- md.digest) {
+      val hex:String = Integer.toHexString(0xff & byte)
+      if (hex.length == 1) sb.append("0")
+      sb.append(hex)
+    }
+    sb.toString
   }
 }

@@ -19,4 +19,10 @@ class Question extends Record[Long, Question] with IdentityGenerator[Long, Quest
 
 object Question extends Question with Table[Long, Question] {
 
+  def findTagged(tag:String): Seq[Question] = {
+    val t = Tag AS "t"
+    val q = Question AS "q"
+
+    SELECT(q.*).FROM(q JOIN t).WHERE(t.name EQ tag).list
+  }
 }

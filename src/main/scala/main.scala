@@ -12,22 +12,12 @@ class Main extends RequestRouter {
 
   'currentDate := new Date
 
-  any("/admin/?*") = new AdminRouter
-
   get("/") = partialFtl("/index.ftl")
   get("/discussions") = forward("/discussions/")
   get("/discussions/") = partialFtl("/discussions.ftl")
   get("/tags") = {
 //    'tags := Tag.findWeights
     partialFtl("/snippets/tags.ftl")
-  }
-  get("/topics/?") = {
-    'topics := Topic.all
-    partialFtl("/questions/topics.ftl")
-  }
-  get("/topics/:id") = {
-    'questions := Question.findByTopic(uri("id").trim)
-    partialFtl("/questions/list.ftl")
   }
 
   get("/download/*") = {
@@ -37,13 +27,13 @@ class Main extends RequestRouter {
   }
 
   get("/login") = partialFtl("/admin/login.ftl")
-  post("/login/?") = Administrator.findByIdentity(param("username").trim, param("password")) match {
-    case Some(a) =>
-      session("principal") = a.username
-      redirect("/admin")
+  post("/login/?") = User.findByIdentity(param("username").trim, SHA_256(param("password"))) match {
+    case Some(u) =>
+      session("user") = u
+      redirect("/")
     case _ =>
       'errors := List(new Msg("login.error"))
-      session.remove("principal")
+      session.remove("user")
       json("/response.json.ftl")
   }
   get("/logout") = {
@@ -58,10 +48,11 @@ class Main extends RequestRouter {
 
 class QuestionsRouter extends RequestRouter("/questions") {
   get("/") = {
-    val q = param("q").trim
-    if (q == "")
-      'questions := Question.findAnswered
-    else 'questions := Question.search(q)
+//    val q = param("q").trim
+//    if (q == "")
+//      'questions := Question.findAnswered
+//    else 'questions := Question.search(q)
+    'questions := Question.all
     partialFtl("/questions/list.ftl")
   }
   get("/tagged/:id") = {
@@ -79,7 +70,6 @@ class QuestionsRouter extends RequestRouter("/questions") {
     case e: Exception => sendError(404)
   }
   get("/ask") = {
-    'topics := Topic.all
     partialFtl("ask.ftl")
   }
   post("/ask") = {
@@ -96,27 +86,15 @@ class QuestionsRouter extends RequestRouter("/questions") {
     }
     try tx {
       val q = new Question()
-      q.username := ctx.getAs[String]("username").getOrElse("")
-      q.title := ctx.getAs[String]("title").getOrElse("")
       q.body := ctx.getAs[String]("body").getOrElse("")
-      ctx.getAs[String]("email") match {
-        case Some(e) if (e != "") => q.email := e
-        case _ =>
-      }
-      ctx.get("topic").map(_.toString.toLong).flatMap(id => Topic.get(id)) match {
-        case Some(t: Topic) => q.topic := t
-        case _ =>
-          'errors := List(new Msg("Question.topic.unknown"))
-          json("/response.json.ftl")
-      }
-      ctx.get("file") match {
-        case Some(fi: FileItem) =>
-          val dstRoot = new File(uploadsRoot, md5(q.username()))
-          val dst = new File(dstRoot, fi.getName)
-          fi.write(dst)
-          q.attachment := dst.getCanonicalPath
-        case _ =>
-      }
+//      ctx.get("file") match {
+//        case Some(fi: FileItem) =>
+//          val dstRoot = new File(uploadsRoot, md5(q.username()))
+//          val dst = new File(dstRoot, fi.getName)
+//          fi.write(dst)
+//          q.attachment := dst.getCanonicalPath
+//        case _ =>
+//      }
       q.INSERT()
       'info := List(new Msg("Question.success"))
       'redirect := "/"

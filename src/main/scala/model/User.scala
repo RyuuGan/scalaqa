@@ -23,4 +23,10 @@ class User extends Record[Long, User] with IdentityGenerator[Long, User]{
 
 object User extends User with Table[Long, User] {
   UNIQUE(login)
+
+  def findByIdentity(login: String, password: String): Option[User] =
+    (this AS "a").map(a => SELECT(a.*)
+        .FROM(a)
+        .WHERE((a.login EQ login) AND (a.password EQ password))
+        .unique)
 }
