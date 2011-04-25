@@ -1,3 +1,5 @@
+/*
+
 package ru.circumflex.tutorials
 
 import ru.circumflex.orm._
@@ -119,3 +121,4 @@ object Administrator extends Administrator with Table[Long, Administrator]{
         .unique)
 
 }
+*/

@@ -6,6 +6,8 @@ import org.apache.commons.io.FileUtils
 import org.apache.commons.fileupload.FileItem
 import java.io.File
 
+import model._
+
 class Main extends RequestRouter {
 
   'currentDate := new Date
@@ -16,7 +18,7 @@ class Main extends RequestRouter {
   get("/discussions") = forward("/discussions/")
   get("/discussions/") = partialFtl("/discussions.ftl")
   get("/tags") = {
-    'tags := Tag.findWeights
+//    'tags := Tag.findWeights
     partialFtl("/snippets/tags.ftl")
   }
   get("/topics/?") = {
