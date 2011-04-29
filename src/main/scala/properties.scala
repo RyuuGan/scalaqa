@@ -11,4 +11,6 @@ object properties {
     The relation name for user
    */
   val USER_TABLE = "user"
+
+  val onAirQuestionCount = 10
 }

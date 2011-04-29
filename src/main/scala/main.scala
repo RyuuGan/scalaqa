@@ -7,12 +7,16 @@ import org.apache.commons.fileupload.FileItem
 import java.io.File
 
 import model._
+import properties._
 
 class Main extends RequestRouter {
 
   'currentDate := new Date
 
-  get("/") = ftl("/index.ftl")
+  get("/") = {
+    'on_air := Question.findLast(onAirQuestionCount)
+    ftl("/index.ftl")
+  }
   get("/discussions") = forward("/discussions/")
   get("/discussions/") = ftl("/discussions.ftl")
 

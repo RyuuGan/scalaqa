@@ -25,4 +25,9 @@ object Question extends Question with Table[Long, Question] {
 
     SELECT(q.*).FROM(q JOIN t).WHERE(t.name EQ tag).list
   }
+
+  def findLast(count:Int):Seq[Question] = {
+    (this AS "q").map(q => SELECT(q.*).FROM(q).ORDER_BY(q.createdAt DESC).LIMIT(count).list)
+
+  }
 }
