@@ -15,6 +15,7 @@ class Main extends RequestRouter {
   get("/") = ftl("/index.ftl")
   get("/discussions") = forward("/discussions/")
   get("/discussions/") = ftl("/discussions.ftl")
+
   get("/tags") = {
 //    'tags := Tag.findWeights
     partialFtl("/snippets/tags.ftl")
@@ -24,21 +25,6 @@ class Main extends RequestRouter {
     val f = new File(servletContext.getRealPath("/public/uploads/" + uri(1)))
     if (f.exists) sendFile(f, f.getName)
     else redirect("/")
-  }
-
-  get("/login") = partialFtl("/admin/login.ftl")
-  post("/login/?") = User.findByIdentity(param("username").trim, SHA_256(param("password"))) match {
-    case Some(u) =>
-      session("user") = u
-      redirect("/")
-    case _ =>
-      'errors := List(new Msg("login.error"))
-      session.remove("user")
-      json("/response.json.ftl")
-  }
-  get("/logout") = {
-    session.remove("principal")
-    redirect("/")
   }
 
   any("/questions") = forward(uri(0) + "/")

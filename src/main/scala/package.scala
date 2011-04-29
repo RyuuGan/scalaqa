@@ -1,10 +1,12 @@
 package ru.circumflex
 
-import ru.circumflex._, core._, web._, freemarker._
+import ru.circumflex._, core._, web._, freemarker._ , markeven._
 import org.apache.commons.fileupload.disk.DiskFileItemFactory
 import java.io._
 import tutorials._, model._
 import java.security.MessageDigest;
+import java.util.{UUID}
+import const._
 
 package object tutorials {
   val log = new Logger("ru.circumflex.tutorials")
@@ -48,4 +50,11 @@ package object tutorials {
     }
     sb.toString
   }
+
+  def randomString(length: Int) = (0 until length)
+      .map(i => CHARS.charAt(rnd.nextInt(CHARS.length)))
+      .mkString
+
+  def randomUUID = UUID.randomUUID.toString
+
 }
