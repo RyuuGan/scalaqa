@@ -27,7 +27,6 @@ a {
 //}
 a:hover {
   text-decoration:none;
-  color:#808080;
 }
 #header > .wrap, #content, #footer {
   width:980px;
@@ -100,12 +99,17 @@ a:hover {
   width:720px;
 }
 #sidebar {
+  vertical-align:top;
   padding:16px;
   display:table-cell;
   background:#eee;
   .author {
-  font-size:14px;
-  color:#333;}
+    font-size:14px;
+    color:#333;
+  }
+  h3 {
+    margin:16px 0;
+  }
 }
 
 #footer {
@@ -343,12 +347,11 @@ a:hover {
   float:right;
   width:50%;
 }
-#sidebar  h3 {
-  margin:16px 0;
+
+// Subscribes
+#subscribes {
+  margin-top:48px;
 }
-
-// Subscribe
-
 #subs {
   clear:both;
   overflow:hidden;
@@ -380,7 +383,7 @@ a:hover {
 // Discussions
 
 #discussions {
-  margin:32px 16px 16px 16px;
+  margin:32px 16px 16px 18px;
 //  padding:16px;
   border-radius:16px;
   border:1px solid #eee;
@@ -393,35 +396,22 @@ a:hover {
     border-bottom:1px solid #eee;
   }
 }
-#all-discuss-button {
-  > a{
-    color:#333;
-    text-decoration:none;
+#discuss-menu {
+  li {
+    display:block;
+    float:left;
+    width:227px;
+    text-align:center;
+    font-size:20px;
+    border-right:1px solid #eee;
   }
-  padding:24px 0;
-  background:url("/img/all-discuss.png")  transparent top left no-repeat;
-  font-size:20px;
-  text-align:center;
-  border-right:1px solid #eee;
-  width:226px;
-  float:left;
-}
-#questions-button {
-  padding:24px 0;
-  font-size:20px;
-  background:url("/img/question_64.png")  transparent top left no-repeat;
-  text-align:center;
-  border-right:1px solid #eee;
-  width:227px;
-  float:left;
-}
-#ideas-button {
-  padding:24px 0;
-  font-size:20px;
-  background:url("/img/idea_64.png")  transparent top left no-repeat;
-  text-align:center;
-  width:227px;
-  float:right;
+  a {
+    color:#bbb;
+    &.current {
+      color: #333;
+      text-decoration:none;
+    }
+  }
 }
 .filters {
   clear:both;
@@ -438,5 +428,40 @@ a:hover {
         color:#333;
       }
     }
+  }
+}
+
+//Tags
+#tags {
+  line-height:1.5;
+  ul {
+    border-bottom:1px solid #bbb;
+    a {
+    font-size:14px;
+    }
+    a + a {
+    color:#1c4278;
+    }
+  }
+  h3 {
+    text-align:center;
+  }
+}
+
+//Last addings
+#last-adds {
+  h4 {
+    border-bottom:1px solid #eee;
+    line-height:2;
+    text-align:center;
+  }
+  clear:both;
+  overflow:hidden;
+  margin-top:48px;
+  border-radius:16px;
+  background-color:#fff;
+  padding:8px;
+  a {
+    font-size:14px;
   }
 }

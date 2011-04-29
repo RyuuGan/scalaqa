@@ -12,9 +12,9 @@ class Main extends RequestRouter {
 
   any("/admin/?*") = new AdminRouter
 
-  get("/") = partialFtl("/index.ftl")
+  get("/") = ftl("/index.ftl")
   get("/discussions") = forward("/discussions/")
-  get("/discussions/") = partialFtl("/discussions.ftl")
+  get("/discussions/") = ftl("/discussions.ftl")
   get("/tags") = {
     'tags := Tag.findWeights
     partialFtl("/snippets/tags.ftl")

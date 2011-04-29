@@ -33,9 +33,11 @@ ${scripts!}
       ${content!}
     </div>
       <div id="sidebar">
-        [#include "/snippets/on-air.ftl"/]
-        [#include "/snippets/active-users.ftl"/]
-        [#include "/snippets/subscribes.ftl"/]
+        [#if sidebar??]
+        ${sidebar!}
+        [#else]
+          [#include "/snippets/on-air.ftl"/]
+        [/#if]
       </div>
   </div>
 </div>
