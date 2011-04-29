@@ -1,61 +1,45 @@
 <?xml version="1.0"?>
 <deployments>
-  <deployment prefix="ru.circumflex.tutorials">
-    <Topic>
-      <name>General questions</name>
-      <sendTo>circumflex@whiteants.net</sendTo>
-    </Topic>
-    <Topic>
-      <name>Miscellaneous</name>
-      <sendTo>circumflex@whiteants.net</sendTo>
-    </Topic>
+  <deployment prefix="ru.circumflex.tutorials.model">
 
-    <Administrator>
-      <username>sl</username>
-      <password>sl</password>
-    </Administrator>
-    <Administrator>
-      <username>inca</username>
-      <password>inca</password>
-    </Administrator>
-    <Administrator>
-      <username>ryu</username>
-      <password>ryu</password>
-    </Administrator>
-    
+    <User>
+      <lastName>Aligorsky</lastName>
+      <firstName>Valery</firstName>
+      <login>ryuugan</login>
+      <password>5cb6ba4a9d88885cf1f3cd94d83904f380733abde8143b3c3ab8623cac2ce87d</password> <!-- dammit -->
+      <email>stdammit@gmail.com</email>
+    </User>
+
     <Question>
-      <username>sl</username>
       <body><![CDATA[
 Hello, I am interested in building Circumflex from scratch. Could you please provide me with
 detailed instructions on how to checkout Circumflex from GitHub and build it? TIA
           ]]></body>
-      <title>How do I build Circumflex from scratch?</title>
-      <email>sl@whiteants.net</email>
-      <topic>
-        <Topic name="General questions"/>
-      </topic>
+      <user>
+        <User login="ryuugan" />
+      </user>
       <tags>
         <Tag>
-          <name>build issues</name>
+          <name>circumflex</name>
         </Tag>
         <Tag>
-          <name>manual request</name>
+          <name>build</name>
         </Tag>
       </tags>
     </Question>
     <Question>
-      <username>sl</username>
       <body><![CDATA[
 It's not that I am whining or nagging, but your documentation **is** poor. And it sucks.
           ]]></body>
-      <title>More docs??</title>
-      <email>inca@whiteants.net</email>
-      <topic>
-        <Topic name="General questions"/>
-      </topic>
+      <user>
+        <User login="ryuugan" />
+      </user>
       <tags>
         <Tag>
-          <name>manual request</name>
+          <name>circumflex</name>
+        </Tag>
+        <Tag>
+          <name>documentation</name>
         </Tag>
       </tags>
     </Question>
