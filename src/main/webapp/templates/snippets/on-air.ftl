@@ -2,8 +2,8 @@
 <div id="on-air">
   <h3 class="center">Прямой эфир</h3>
   <ul>
-    [#if on_air??]
-      [#list on_air as q]
+    [#if questions??]
+      [#list questions as q]
       <li>
         <ul>
           <li><a class="author" href="#"><img src="/img/unknown_16.png">${q.user.login}</li>
