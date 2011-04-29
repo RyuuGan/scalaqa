@@ -12,5 +12,5 @@ object properties {
    */
   val USER_TABLE = "user"
 
-  val onAirQuestionCount = 10
+  val lastQuestionCount = 10
 }

@@ -14,11 +14,14 @@ class Main extends RequestRouter {
   'currentDate := new Date
 
   get("/") = {
-    'on_air := Question.findLast(onAirQuestionCount)
+    'questions := Question.findLast(lastQuestionCount)
     ftl("/index.ftl")
   }
   get("/discussions") = forward("/discussions/")
-  get("/discussions/") = ftl("/discussions.ftl")
+  get("/discussions/") = {
+    'questions := Question.findLast(lastQuestionCount)
+    ftl("/discussions.ftl")
+  }
 
   get("/tags") = {
 //    'tags := Tag.findWeights
