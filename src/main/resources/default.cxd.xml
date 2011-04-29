@@ -3,10 +3,9 @@
   <deployment prefix="ru.circumflex.tutorials.model">
 
     <User>
-      <lastName>Aligorsky</lastName>
-      <firstName>Valery</firstName>
+      <id>1</id>
       <login>ryuugan</login>
-      <password>5cb6ba4a9d88885cf1f3cd94d83904f380733abde8143b3c3ab8623cac2ce87d</password> <!-- dammit -->
+      <password>dt</password>
       <email>stdammit@gmail.com</email>
     </User>
 
