@@ -4,10 +4,12 @@
   <ul>
     [#if on_air??]
       [#list on_air as q]
+      <li>
         <ul>
           <li><a class="author" href="#"><img src="/img/unknown_16.png">${q.user.login}</li>
           <li><a class="question-small" href="#">${q.body?substring(0, 17)} ...</a></li>
         </ul>
+      </li>
       [/#list]
     [/#if]
   </ul>
