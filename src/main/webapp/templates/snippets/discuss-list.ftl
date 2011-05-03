@@ -15,7 +15,7 @@
       [#if questions??]
         [#list questions as q]
         <div>
-          <a class="question" href="#">
+          <a class="question" href="/questions/${q.id}">
             ${q.body}
           </a>
           <br>
