@@ -16,6 +16,7 @@ class Question extends Record[Long, Question] with IdentityGenerator[Long, Quest
   def tags = inverseMany(Tag.question)
   def comments = inverseMany(QuestionComment.question)
   def votes = inverseMany(QuestionVote.question)
+  def answers = inverseMany(Answer.question)
 }
 
 object Question extends Question with Table[Long, Question] {
