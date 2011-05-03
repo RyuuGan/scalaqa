@@ -21,7 +21,7 @@
           <br>
           <img src="/img/tags.png">
           [#list q.tags as t]
-            <a class="tags" href="#">${t}</a>
+            <a class="tags" href="#">${t.name}</a>
           [/#list]
         </div>
       [/#list]
