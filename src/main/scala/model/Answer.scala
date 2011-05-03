@@ -13,7 +13,7 @@ class Answer extends Record[Long, Answer] with IdentityGenerator[Long, Answer] {
   val question = "question_id".BIGINT.NOT_NULL.REFERENCES(Question).ON_DELETE(CASCADE).ON_UPDATE(CASCADE)
   val user = "user_id".BIGINT.NOT_NULL.REFERENCES(User).ON_DELETE(CASCADE).ON_UPDATE(CASCADE)
 
-  def comments = inverseMany(Comment.answer)
+  def comments = inverseMany(AnswerComment.answer)
   def votes = inverseMany(AnswerVote.answer)
 }
 

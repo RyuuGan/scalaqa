@@ -53,10 +53,10 @@ class QuestionsRouter extends RequestRouter("/questions") {
     partialFtl("/questions/list.ftl")
   }
   get("/:id") = try {
-    Question.get(param("id").toLong) match {
+    Question.get(uri("id").toLong) match {
       case Some(q) =>
         'question := q
-        partialFtl("/questions/view.ftl")
+        ftl("/questions/view.ftl")
       case _ => sendError(404)
     }
   } catch {

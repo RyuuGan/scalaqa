@@ -14,6 +14,7 @@ class Question extends Record[Long, Question] with IdentityGenerator[Long, Quest
   val user = "user_id".BIGINT.NOT_NULL.REFERENCES(User).ON_DELETE(CASCADE).ON_UPDATE(CASCADE)
 
   def tags = inverseMany(Tag.question)
+  def comments = inverseMany(QuestionComment.question)
   def votes = inverseMany(QuestionVote.question)
 }
 
